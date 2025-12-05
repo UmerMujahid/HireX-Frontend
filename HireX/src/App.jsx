@@ -1,18 +1,17 @@
-```
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState } from 'react';
 import LandingPage from './pages/LandingPage';
 import AboutUs from './pages/AboutUs';
+import Navbar from './components/Navbar';
 
 function App() {
+  const [currentPage, setCurrentPage] = useState('home');
+
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/about" element={<AboutUs />} />
-      </Routes>
-    </Router>
+    <div>
+        <Navbar onNavigate={setCurrentPage} />
+        {currentPage === 'home' ? <LandingPage /> : <AboutUs />}
+    </div>
   );
 }
 
 export default App;
-```

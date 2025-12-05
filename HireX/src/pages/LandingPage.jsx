@@ -1,5 +1,4 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Button from '../components/Button';
 import Card from '../components/Card';
@@ -8,7 +7,6 @@ import { Users, Briefcase, TrendingUp, Cpu, ClipboardCheck, BarChart3, Clock } f
 const LandingPage = () => {
     return (
         <div className="min-h-screen bg-white font-sans text-gray-900">
-            <Navbar />
 
             {/* Hero Section */}
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-20 text-center">

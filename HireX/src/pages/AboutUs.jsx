@@ -1,5 +1,4 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Button from '../components/Button';
 import { Brain, FileText, TrendingUp } from 'lucide-react';
@@ -7,7 +6,6 @@ import { Brain, FileText, TrendingUp } from 'lucide-react';
 const AboutUs = () => {
     return (
         <div className="min-h-screen bg-white font-sans text-gray-900">
-            <Navbar />
 
             {/* Header Section */}
             <section className="pt-16 pb-12 text-center max-w-7xl mx-auto px-4">

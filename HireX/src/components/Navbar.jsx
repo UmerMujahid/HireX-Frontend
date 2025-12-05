@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Menu, X, Users } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import Button from './Button';
 
-const Navbar = () => {
+const Navbar = ({ onNavigate }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -11,17 +10,15 @@ const Navbar = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-14">
                     {/* Logo */}
-                    <div className="flex-shrink-0 flex items-center gap-2">
-                        <Link to="/" className="flex items-center gap-2">
-                            <Users className="text-gray-900" size={32} strokeWidth={2.5} />
-                            <span className="text-xl font-bold text-gray-900">HireX</span>
-                        </Link>
+                    <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer" onClick={() => onNavigate('home')}>
+                        <Users className="text-gray-900" size={32} strokeWidth={2.5} />
+                        <span className="text-xl font-bold text-gray-900">HireX</span>
                     </div>
 
                     {/* Desktop Menu */}
                     <div className="hidden md:flex items-center space-x-10">
-                        <Link to="/" className="text-primary hover:text-primary-hover font-medium">Home</Link>
-                        <Link to="/about" className="text-gray-900 hover:text-primary font-medium">About Us</Link>
+                        <button onClick={() => onNavigate('home')} className="text-primary hover:text-primary-hover font-medium">Home</button>
+                        <button onClick={() => onNavigate('about')} className="text-gray-900 hover:text-primary font-medium">About Us</button>
                         <a href="#" className="text-gray-900 hover:text-primary font-medium">Contact Us</a>
                         <a href="#" className="text-gray-900 hover:text-primary font-medium">Login</a>
                         <Button variant="primary">Get Started</Button>
@@ -42,8 +39,8 @@ const Navbar = () => {
             {/* Mobile Menu */}
             {isOpen && (
                 <div className="md:hidden absolute top-20 left-0 w-full bg-white shadow-lg z-50 py-4 px-4 flex flex-col space-y-4">
-                    <Link to="/" className="text-primary font-medium" onClick={() => setIsOpen(false)}>Home</Link>
-                    <Link to="/about" className="text-gray-900 font-medium" onClick={() => setIsOpen(false)}>About Us</Link>
+                    <button onClick={() => { onNavigate('home'); setIsOpen(false); }} className="text-primary font-medium text-left">Home</button>
+                    <button onClick={() => { onNavigate('about'); setIsOpen(false); }} className="text-gray-900 font-medium text-left">About Us</button>
                     <a href="#" className="text-gray-900 font-medium" onClick={() => setIsOpen(false)}>Contact Us</a>
                     <a href="#" className="text-gray-900 font-medium" onClick={() => setIsOpen(false)}>Login</a>
                     <Button variant="primary" className="w-full">Get Started</Button>
