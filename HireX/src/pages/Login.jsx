@@ -20,7 +20,7 @@ const Login = ({ onNavigate }) => {
                         <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 p-8 md:p-10">
 
                             <div className="text-center mb-8">
-                                <h2 className="text-2xl font-bold mb-2">Welcome Back To HireX</h2>
+                                <h2 className="text-xl font-bold mb-2">Welcome Back To HireX</h2>
                                 <p className="text-gray-500">Sign In to continue to your account</p>
                             </div>
 
@@ -96,6 +96,16 @@ const Login = ({ onNavigate }) => {
                             <p className="mt-8 text-center text-sm font-bold">
                                 New to HireX? <button onClick={() => onNavigate('signup-hr')} className="text-cyan-400 hover:text-cyan-500">SignUp</button>
                             </p>
+
+                            <div className="mt-6 text-center border-t border-gray-100 pt-4">
+                                <button
+                                    onClick={() => onNavigate('admin-dashboard')}
+                                    className="text-sm font-bold hover:text-cyan-700 transition-colors"
+                                    style={{ color: '#00bbd3' }}
+                                >
+                                    Access Admin Dashboard (Dev Mode)
+                                </button>
+                            </div>
 
                         </div>
                     </div>
