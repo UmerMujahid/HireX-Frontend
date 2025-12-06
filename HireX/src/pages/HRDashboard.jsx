@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Footer from '../components/Footer';
 import PostJob from '../components/PostJob';
 import ApplicationsList from '../components/ApplicationsList';
+import Interviews from '../components/Interviews';
 import {
     Users,
     Home,
@@ -42,7 +43,10 @@ const HRDashboard = ({ onNavigate }) => {
                         <Briefcase size={20} />
                         Job Listings
                     </button>
-                    <button className="flex items-center gap-3 w-full px-4 py-3 text-gray-500 hover:bg-gray-50 hover:text-gray-900 rounded-lg font-medium transition-colors">
+                    <button
+                        className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg font-medium transition-colors ${currentView === 'interviews' ? 'text-gray-900 bg-gray-100' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
+                        onClick={() => setCurrentView('interviews')}
+                    >
                         <Calendar size={20} />
                         Interviews
                     </button>
@@ -251,8 +255,10 @@ const HRDashboard = ({ onNavigate }) => {
                         </>
                     ) : currentView === 'post-job' ? (
                         <PostJob onCancel={() => setCurrentView('dashboard')} />
+                    ) : currentView === 'applications' ? (
+                        <ApplicationsList onScheduleClick={() => setCurrentView('interviews')} />
                     ) : (
-                        <ApplicationsList />
+                        <Interviews />
                     )}
                 </main>
                 <Footer />

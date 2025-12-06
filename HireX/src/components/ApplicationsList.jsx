@@ -9,7 +9,7 @@ import {
     User
 } from 'lucide-react';
 
-const ApplicationsList = () => {
+const ApplicationsList = ({ onScheduleClick }) => {
     // Dummy Data matching screenshot
     const candidates = [
         {
@@ -203,7 +203,10 @@ const ApplicationsList = () => {
                                             <MessageSquare size={14} />
                                             View Feedback
                                         </button>
-                                        <button className="flex items-center gap-1.5 bg-blue-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-600 transition-colors">
+                                        <button
+                                            className="flex items-center gap-1.5 bg-blue-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-600 transition-colors"
+                                            onClick={onScheduleClick}
+                                        >
                                             <Calendar size={14} />
                                             Schedule Interview
                                         </button>
