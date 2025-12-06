@@ -24,11 +24,29 @@ const Login = () => {
                         <h1 className="text-6xl font-bold mb-8 text-black">HireX</h1>
 
                         <div className="w-full border-t border-gray-400 my-4"></div>
-                        <div className="mt-auto">
-                            <Footer />
+                        <p className="text-xl font-semibold text-black py-2">
+                            Transform Your Hiring Process effortlessly !
+                        </p>
+                        <div className="w-full border-t border-gray-400 my-4 mb-12"></div>
+
+                        <div className="flex flex-col gap-6 w-full max-w-xs">
+                            <button className="bg-gray-900 text-white font-bold py-4 px-8 rounded-xl text-xl hover:bg-gray-800 transition-colors">
+                                Sign Up
+                            </button>
+                            <button className="bg-gray-900 text-white font-bold py-4 px-8 rounded-xl text-xl hover:bg-gray-800 transition-colors">
+                                Sign In
+                            </button>
                         </div>
                     </div>
-                    );
+
+                </div>
+            </div>
+
+            <div className="mt-auto">
+                <Footer />
+            </div>
+        </div>
+    );
 };
 
-                    export default Login;
+export default Login;
