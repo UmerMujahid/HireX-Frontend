@@ -9,20 +9,27 @@ import Signup from './pages/Signup';
 import HRDashboard from './pages/HRDashboard';
 import HRJobListings from './pages/HRJobListings';
 import Navbar from './components/Navbar';
+import CandidateDashboard from './pages/CandidateDashboard';
+import ApplicationDetails from './pages/ApplicationDetails';
+import CandidateProfile from './pages/CandidateProfile';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
 
-  // Dashboard has its own layout, so we might not want the main Navbar there?
-  // Screenshot shows "HireX" in sidebar, and specific top nav.
-  // The global <Navbar> at line 14 should probably be hidden for dashboard pages if we strictly follow the design.
-  // However, for simplicity let's just render the page. The user didn't ask to remove the global navbar explicitly, 
-  // but the dashed lines in design imply a standalone layout. 
-  // I will conditionally render Navbar only if NOT on dashboard.
+  // Pages that have their own specific layout/navbar or don't need the main global navbar
+  const hideGlobalNavbarPages = [
+    'hr-dashboard',
+    'hr-job-listings',
+    'hr-interviews',
+    'hr-reports',
+    'candidate-dashboard',
+    'application-details',
+    'candidate-profile'
+  ];
 
   return (
     <div>
-      {currentPage !== 'hr-dashboard' && currentPage !== 'hr-job-listings' && currentPage !== 'hr-interviews' && currentPage !== 'hr-reports' && <Navbar onNavigate={setCurrentPage} currentPage={currentPage} />}
+      {!hideGlobalNavbarPages.includes(currentPage) && <Navbar onNavigate={setCurrentPage} currentPage={currentPage} />}
 
       {currentPage === 'home' && <LandingPage onNavigate={setCurrentPage} />}
       {currentPage === 'about' && <AboutUs />}
@@ -31,10 +38,17 @@ function App() {
       {currentPage === 'signup' && <Signup onNavigate={setCurrentPage} />}
       {currentPage === 'get-started' && <GetStarted onNavigate={setCurrentPage} />}
       {currentPage === 'forgot-password' && <ForgotPassword onNavigate={setCurrentPage} />}
+
+      {/* HR Routes */}
       {currentPage === 'hr-dashboard' && <HRDashboard onNavigate={setCurrentPage} />}
       {currentPage === 'hr-interviews' && <HRDashboard onNavigate={setCurrentPage} initialView="interviews" />}
       {currentPage === 'hr-reports' && <HRDashboard onNavigate={setCurrentPage} initialView="applications" />}
       {currentPage === 'hr-job-listings' && <HRJobListings onNavigate={setCurrentPage} />}
+
+      {/* Candidate Routes */}
+      {currentPage === 'candidate-dashboard' && <CandidateDashboard onNavigate={setCurrentPage} />}
+      {currentPage === 'application-details' && <ApplicationDetails onNavigate={setCurrentPage} />}
+      {currentPage === 'candidate-profile' && <CandidateProfile onNavigate={setCurrentPage} />}
     </div>
   );
 }
