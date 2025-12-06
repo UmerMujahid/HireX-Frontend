@@ -7,6 +7,7 @@ import GetStarted from './pages/GetStarted';
 import ForgotPassword from './pages/ForgotPassword';
 import Signup from './pages/Signup';
 import HRDashboard from './pages/HRDashboard';
+import HRJobListings from './pages/HRJobListings';
 import Navbar from './components/Navbar';
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
 
   return (
     <div>
-      {currentPage !== 'hr-dashboard' && <Navbar onNavigate={setCurrentPage} currentPage={currentPage} />}
+      {currentPage !== 'hr-dashboard' && currentPage !== 'hr-job-listings' && currentPage !== 'hr-interviews' && currentPage !== 'hr-reports' && <Navbar onNavigate={setCurrentPage} currentPage={currentPage} />}
 
       {currentPage === 'home' && <LandingPage onNavigate={setCurrentPage} />}
       {currentPage === 'about' && <AboutUs />}
@@ -31,6 +32,9 @@ function App() {
       {currentPage === 'get-started' && <GetStarted onNavigate={setCurrentPage} />}
       {currentPage === 'forgot-password' && <ForgotPassword onNavigate={setCurrentPage} />}
       {currentPage === 'hr-dashboard' && <HRDashboard onNavigate={setCurrentPage} />}
+      {currentPage === 'hr-interviews' && <HRDashboard onNavigate={setCurrentPage} initialView="interviews" />}
+      {currentPage === 'hr-reports' && <HRDashboard onNavigate={setCurrentPage} initialView="applications" />}
+      {currentPage === 'hr-job-listings' && <HRJobListings onNavigate={setCurrentPage} />}
     </div>
   );
 }
