@@ -13,6 +13,9 @@ import CandidateDashboard from './pages/CandidateDashboard';
 import ApplicationDetails from './pages/ApplicationDetails';
 import CandidateProfile from './pages/CandidateProfile';
 
+import InterviewerDashboard from './pages/InterviewerDashboard';
+import InterviewFeedback from './pages/InterviewFeedback';
+
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
 
@@ -24,7 +27,9 @@ function App() {
     'hr-reports',
     'candidate-dashboard',
     'application-details',
-    'candidate-profile'
+    'candidate-profile',
+    'interviewer-dashboard',
+    'interview-feedback'
   ];
 
   return (
@@ -49,6 +54,10 @@ function App() {
       {currentPage === 'candidate-dashboard' && <CandidateDashboard onNavigate={setCurrentPage} />}
       {currentPage === 'application-details' && <ApplicationDetails onNavigate={setCurrentPage} />}
       {currentPage === 'candidate-profile' && <CandidateProfile onNavigate={setCurrentPage} />}
+
+      {/* Interviewer Routes */}
+      {currentPage === 'interviewer-dashboard' && <InterviewerDashboard onNavigate={setCurrentPage} />}
+      {currentPage === 'interview-feedback' && <InterviewFeedback onNavigate={setCurrentPage} />}
     </div>
   );
 }
