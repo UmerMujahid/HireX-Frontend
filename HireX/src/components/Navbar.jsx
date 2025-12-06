@@ -29,7 +29,12 @@ const Navbar = ({ onNavigate, currentPage }) => {
                         >
                             About Us
                         </button>
-                        <a href="#" className="text-gray-900 hover:text-primary font-medium">Contact Us</a>
+                        <button
+                            onClick={() => onNavigate('contact')}
+                            className={`${currentPage === 'contact' ? 'text-primary' : 'text-gray-900'} hover:text-primary-hover font-medium transition-colors`}
+                        >
+                            Contact Us
+                        </button>
                         <a href="#" className="text-gray-900 hover:text-primary font-medium">Login</a>
                         <Button variant="primary">Get Started</Button>
                     </div>
@@ -51,7 +56,7 @@ const Navbar = ({ onNavigate, currentPage }) => {
                 <div className="md:hidden absolute top-20 left-0 w-full bg-white shadow-lg z-50 py-4 px-4 flex flex-col space-y-4">
                     <button onClick={() => { onNavigate('home'); setIsOpen(false); }} className={`${currentPage === 'home' ? 'text-primary' : 'text-gray-900'} font-medium text-left`}>Home</button>
                     <button onClick={() => { onNavigate('about'); setIsOpen(false); }} className={`${currentPage === 'about' ? 'text-primary' : 'text-gray-900'} font-medium text-left`}>About Us</button>
-                    <a href="#" className="text-gray-900 font-medium" onClick={() => setIsOpen(false)}>Contact Us</a>
+                    <button onClick={() => { onNavigate('contact'); setIsOpen(false); }} className={`${currentPage === 'contact' ? 'text-primary' : 'text-gray-900'} font-medium text-left`}>Contact Us</button>
                     <a href="#" className="text-gray-900 font-medium" onClick={() => setIsOpen(false)}>Login</a>
                     <Button variant="primary" className="w-full">Get Started</Button>
                 </div>

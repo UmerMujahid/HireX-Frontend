@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import LandingPage from './pages/LandingPage';
 import AboutUs from './pages/AboutUs';
+import ContactUs from './pages/ContactUs';
 import Navbar from './components/Navbar';
 
 function App() {
@@ -9,7 +10,9 @@ function App() {
   return (
     <div>
       <Navbar onNavigate={setCurrentPage} currentPage={currentPage} />
-      {currentPage === 'home' ? <LandingPage /> : <AboutUs />}
+      {currentPage === 'home' && <LandingPage />}
+      {currentPage === 'about' && <AboutUs />}
+      {currentPage === 'contact' && <ContactUs />}
     </div>
   );
 }
