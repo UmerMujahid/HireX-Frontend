@@ -9,7 +9,7 @@ const ContactUs = () => {
             {/* Header Section */}
             <section className="pt-16 pb-8 text-center max-w-7xl mx-auto px-4">
                 <div className="relative inline-block mb-12">
-                    <h1 className="text-5xl font-bold z-10 relative px-4 inline-block border-b-4 border-primary pb-2">Contact Us</h1>
+                    <h1 className="text-5xl font-bold z-10 relative px-4 inline-block border-b-4 border-gray-900 pb-2">Contact Us</h1>
                 </div>
             </section>
 
@@ -30,7 +30,7 @@ const ContactUs = () => {
                                 <input
                                     type="text"
                                     placeholder="Enter Your Full Name"
-                                    className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-500 focus:ring-2 focus:ring-primary focus:outline-none"
+                                    className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-500 focus:outline-none"
                                 />
                             </div>
 
@@ -39,14 +39,14 @@ const ContactUs = () => {
                                 <input
                                     type="email"
                                     placeholder="user@gmail.com"
-                                    className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-500 focus:ring-2 focus:ring-primary focus:outline-none"
+                                    className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-500 focus:outline-none"
                                 />
                             </div>
 
                             <div>
                                 <label className="block text-sm font-bold text-gray-900 mb-2">Subject</label>
                                 <div className="relative">
-                                    <select className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 focus:ring-2 focus:ring-primary focus:outline-none appearance-none">
+                                    <select className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 focus:outline-none appearance-none">
                                         <option>Subject</option>
                                         <option>General Inquiry</option>
                                         <option>Support</option>
@@ -63,7 +63,7 @@ const ContactUs = () => {
                                 <textarea
                                     rows="4"
                                     placeholder="Enter Your Message"
-                                    className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-500 focus:ring-2 focus:ring-primary focus:outline-none resize-none"
+                                    className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-500 focus:outline-none resize-none"
                                 ></textarea>
                             </div>
 

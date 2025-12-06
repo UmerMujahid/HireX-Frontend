@@ -6,9 +6,9 @@ const Navbar = ({ onNavigate, currentPage }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <nav className="bg-white py-2 shadow-md sticky top-0 z-50">
+        <nav className="bg-white py-1 shadow-md sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-14">
+                <div className="flex justify-between items-center h-12">
                     {/* Logo */}
                     <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer" onClick={() => onNavigate('home')}>
                         <Users className="text-gray-900" size={32} strokeWidth={2.5} />
@@ -35,8 +35,13 @@ const Navbar = ({ onNavigate, currentPage }) => {
                         >
                             Contact Us
                         </button>
-                        <a href="#" className="text-gray-900 hover:text-primary font-medium">Login</a>
-                        <Button variant="primary" onClick={() => onNavigate('login')}>Get Started</Button>
+                        <button
+                            onClick={() => onNavigate('login')}
+                            className={`${currentPage === 'login' ? 'text-primary' : 'text-gray-900'} hover:text-primary-hover font-medium transition-colors`}
+                        >
+                            Login
+                        </button>
+                        <Button variant="primary" onClick={() => onNavigate('get-started')}>Get Started</Button>
                     </div>
 
                     {/* Mobile menu button */}
@@ -57,8 +62,8 @@ const Navbar = ({ onNavigate, currentPage }) => {
                     <button onClick={() => { onNavigate('home'); setIsOpen(false); }} className={`${currentPage === 'home' ? 'text-primary' : 'text-gray-900'} font-medium text-left`}>Home</button>
                     <button onClick={() => { onNavigate('about'); setIsOpen(false); }} className={`${currentPage === 'about' ? 'text-primary' : 'text-gray-900'} font-medium text-left`}>About Us</button>
                     <button onClick={() => { onNavigate('contact'); setIsOpen(false); }} className={`${currentPage === 'contact' ? 'text-primary' : 'text-gray-900'} font-medium text-left`}>Contact Us</button>
-                    <a href="#" className="text-gray-900 font-medium" onClick={() => setIsOpen(false)}>Login</a>
-                    <Button variant="primary" className="w-full" onClick={() => { onNavigate('login'); setIsOpen(false); }}>Get Started</Button>
+                    <button onClick={() => { onNavigate('login'); setIsOpen(false); }} className={`${currentPage === 'login' ? 'text-primary' : 'text-gray-900'} font-medium text-left`}>Login</button>
+                    <Button variant="primary" className="w-full" onClick={() => { onNavigate('get-started'); setIsOpen(false); }}>Get Started</Button>
                 </div>
             )}
         </nav>

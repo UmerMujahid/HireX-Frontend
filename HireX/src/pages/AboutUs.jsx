@@ -10,7 +10,7 @@ const AboutUs = () => {
             {/* Header Section */}
             <section className="pt-16 pb-12 text-center max-w-7xl mx-auto px-4">
                 <div className="relative inline-block mb-12">
-                    <h1 className="text-5xl font-bold z-10 relative px-4 inline-block border-b-4 border-primary pb-2">About Us</h1>
+                    <h1 className="text-5xl font-bold z-10 relative px-4 inline-block border-b-4 border-gray-900 pb-2">About Us</h1>
                 </div>
 
                 <p className="max-w-5xl mx-auto text-lg md:text-xl text-gray-800 leading-relaxed">
@@ -64,7 +64,7 @@ const AboutUs = () => {
             </section>
 
             {/* Bottom CTA */}
-            <section className="py-16 max-w-4xl mx-auto px-4">
+            <section className="py-4 max-w-4xl mx-auto px-4">
                 <div className="border-2 border-gray-200 rounded-2xl p-12 text-center shadow-lg bg-gray-50">
                     <h2 className="text-3xl font-normal mb-8 text-gray-800">Ready to See the Future of Hiring?</h2>
                     <Button variant="primary" size="lg" className="px-10 py-3 text-base font-bold shadow-md hover:shadow-lg transition-all">

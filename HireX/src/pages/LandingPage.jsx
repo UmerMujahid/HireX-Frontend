@@ -4,16 +4,16 @@ import Button from '../components/Button';
 import Card from '../components/Card';
 import { Users, Briefcase, TrendingUp, Cpu, ClipboardCheck, BarChart3, Clock } from 'lucide-react';
 
-const LandingPage = () => {
+const LandingPage = ({ onNavigate }) => {
     return (
         <div className="min-h-screen bg-white font-sans text-gray-900">
 
             {/* Hero Section */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-20 text-center">
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8 text-center">
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">
                     Welcome to HireX
                 </h1>
-                <p className="text-gray-600 text-lg mb-16">
+                <p className="text-gray-600 text-lg mb-8">
                     Your trusted platform for effecient and successful recruitment services
                 </p>
 
@@ -114,7 +114,7 @@ const LandingPage = () => {
                     </div>
                 </div>
 
-                <Button variant="primary" size="lg" className="px-12 font-bold">
+                <Button variant="primary" size="lg" className="px-12 font-bold" onClick={() => onNavigate('get-started')}>
                     Browse More
                 </Button>
             </section>
