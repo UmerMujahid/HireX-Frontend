@@ -11,7 +11,7 @@ const ForgotPassword = ({ onNavigate }) => {
                 <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
 
                     {/* Left Column: Marketing Info (Reusable) */}
-                    <AuthSidebar />
+                    <AuthSidebar onNavigate={onNavigate} />
 
                     {/* Right Column: Forgot Password Form */}
                     <div className="flex-1 w-full max-w-md mx-auto">

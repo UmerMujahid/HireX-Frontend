@@ -1,11 +1,11 @@
 import React from 'react';
 import { Zap, BarChart3, CheckCircle2, Users } from 'lucide-react';
 
-const AuthSidebar = () => {
+const AuthSidebar = ({ onNavigate }) => {
     return (
         <div className="flex-1 space-y-10 pt-4">
             {/* Logo Header */}
-            <div className="flex items-center gap-2 mb-6">
+            <div className="flex items-center gap-2 mb-6 cursor-pointer" onClick={() => onNavigate && onNavigate('home')}>
                 <Users className="text-gray-900" size={32} strokeWidth={2.5} />
                 <span className="text-2xl font-bold text-gray-900">HireX</span>
             </div>

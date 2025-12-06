@@ -34,7 +34,7 @@ const Signup = ({ onNavigate }) => {
                         <button
                             className="w-full font-bold py-4 rounded-xl text-xl hover:opacity-90 transition-opacity text-gray-900 shadow-md transform hover:scale-[1.02] transition-transform"
                             style={{ backgroundColor: '#a3e635' }}
-                            onClick={() => setShowModal(false)}
+                            onClick={() => onNavigate('hr-dashboard')}
                         >
                             Continue To Dashboard
                         </button>
@@ -46,7 +46,7 @@ const Signup = ({ onNavigate }) => {
                 <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
 
                     {/* Left Column: Marketing Info (Reusable) */}
-                    <AuthSidebar />
+                    <AuthSidebar onNavigate={onNavigate} />
 
                     {/* Right Column: Sign Up Form */}
                     <div className="flex-1 w-full max-w-md mx-auto">
