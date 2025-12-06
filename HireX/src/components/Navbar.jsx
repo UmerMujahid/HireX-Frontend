@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Menu, X, Users } from 'lucide-react';
 import Button from './Button';
 
-const Navbar = ({ onNavigate }) => {
+const Navbar = ({ onNavigate, currentPage }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -17,8 +17,18 @@ const Navbar = ({ onNavigate }) => {
 
                     {/* Desktop Menu */}
                     <div className="hidden md:flex items-center space-x-10">
-                        <button onClick={() => onNavigate('home')} className="text-primary hover:text-primary-hover font-medium">Home</button>
-                        <button onClick={() => onNavigate('about')} className="text-gray-900 hover:text-primary font-medium">About Us</button>
+                        <button
+                            onClick={() => onNavigate('home')}
+                            className={`${currentPage === 'home' ? 'text-primary' : 'text-gray-900'} hover:text-primary-hover font-medium transition-colors`}
+                        >
+                            Home
+                        </button>
+                        <button
+                            onClick={() => onNavigate('about')}
+                            className={`${currentPage === 'about' ? 'text-primary' : 'text-gray-900'} hover:text-primary-hover font-medium transition-colors`}
+                        >
+                            About Us
+                        </button>
                         <a href="#" className="text-gray-900 hover:text-primary font-medium">Contact Us</a>
                         <a href="#" className="text-gray-900 hover:text-primary font-medium">Login</a>
                         <Button variant="primary">Get Started</Button>
@@ -39,8 +49,8 @@ const Navbar = ({ onNavigate }) => {
             {/* Mobile Menu */}
             {isOpen && (
                 <div className="md:hidden absolute top-20 left-0 w-full bg-white shadow-lg z-50 py-4 px-4 flex flex-col space-y-4">
-                    <button onClick={() => { onNavigate('home'); setIsOpen(false); }} className="text-primary font-medium text-left">Home</button>
-                    <button onClick={() => { onNavigate('about'); setIsOpen(false); }} className="text-gray-900 font-medium text-left">About Us</button>
+                    <button onClick={() => { onNavigate('home'); setIsOpen(false); }} className={`${currentPage === 'home' ? 'text-primary' : 'text-gray-900'} font-medium text-left`}>Home</button>
+                    <button onClick={() => { onNavigate('about'); setIsOpen(false); }} className={`${currentPage === 'about' ? 'text-primary' : 'text-gray-900'} font-medium text-left`}>About Us</button>
                     <a href="#" className="text-gray-900 font-medium" onClick={() => setIsOpen(false)}>Contact Us</a>
                     <a href="#" className="text-gray-900 font-medium" onClick={() => setIsOpen(false)}>Login</a>
                     <Button variant="primary" className="w-full">Get Started</Button>

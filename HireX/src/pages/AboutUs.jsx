@@ -10,10 +10,7 @@ const AboutUs = () => {
             {/* Header Section */}
             <section className="pt-16 pb-12 text-center max-w-7xl mx-auto px-4">
                 <div className="relative inline-block mb-12">
-                    <h1 className="text-5xl font-bold z-10 relative px-4">About Us</h1>
-                    <div className="absolute bottom-0 left-0 w-full h-4 bg-gray-200 -z-0 opacity-50 transform -translate-y-2"></div>
-                    {/* The screenshot has a line under the text, let's substitute with a border-b for now or simple styling */}
-                    <div className="h-0.5 w-1/2 bg-gray-400 mx-auto mt-4"></div>
+                    <h1 className="text-5xl font-bold z-10 relative px-4 inline-block border-b-4 border-primary pb-2">About Us</h1>
                 </div>
 
                 <p className="max-w-5xl mx-auto text-lg md:text-xl text-gray-800 leading-relaxed">
@@ -32,7 +29,7 @@ const AboutUs = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Value 1 */}
-                    <div className="border border-gray-400 rounded-lg p-8 flex flex-col items-start text-left h-full">
+                    <div className="border border-gray-400 rounded-lg p-8 flex flex-col items-start text-left h-full transition-transform hover:-translate-y-1 duration-300">
                         <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-6">
                             <Brain className="text-gray-900" size={28} />
                         </div>
@@ -43,7 +40,7 @@ const AboutUs = () => {
                     </div>
 
                     {/* Value 2 */}
-                    <div className="border border-gray-400 rounded-lg p-8 flex flex-col items-start text-left h-full">
+                    <div className="border border-gray-400 rounded-lg p-8 flex flex-col items-start text-left h-full transition-transform hover:-translate-y-1 duration-300">
                         <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-6">
                             <FileText className="text-gray-900" size={28} />
                         </div>
@@ -54,7 +51,7 @@ const AboutUs = () => {
                     </div>
 
                     {/* Value 3 */}
-                    <div className="border border-gray-400 rounded-lg p-8 flex flex-col items-start text-left h-full">
+                    <div className="border border-gray-400 rounded-lg p-8 flex flex-col items-start text-left h-full transition-transform hover:-translate-y-1 duration-300">
                         <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-6">
                             <TrendingUp className="text-gray-900" size={28} />
                         </div>
@@ -67,11 +64,13 @@ const AboutUs = () => {
             </section>
 
             {/* Bottom CTA */}
-            <section className="py-24 text-center">
-                <h2 className="text-3xl font-normal mb-8 text-gray-800">Ready to See the Future of Hiring?</h2>
-                <Button variant="primary" size="lg" className="px-10 py-3 text-base font-bold">
-                    Sign Up
-                </Button>
+            <section className="py-16 max-w-4xl mx-auto px-4">
+                <div className="border-2 border-gray-200 rounded-2xl p-12 text-center shadow-lg bg-gray-50">
+                    <h2 className="text-3xl font-normal mb-8 text-gray-800">Ready to See the Future of Hiring?</h2>
+                    <Button variant="primary" size="lg" className="px-10 py-3 text-base font-bold shadow-md hover:shadow-lg transition-all">
+                        Sign Up
+                    </Button>
+                </div>
             </section>
 
             <Footer />

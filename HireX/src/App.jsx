@@ -8,8 +8,8 @@ function App() {
 
   return (
     <div>
-        <Navbar onNavigate={setCurrentPage} />
-        {currentPage === 'home' ? <LandingPage /> : <AboutUs />}
+      <Navbar onNavigate={setCurrentPage} currentPage={currentPage} />
+      {currentPage === 'home' ? <LandingPage /> : <AboutUs />}
     </div>
   );
 }
