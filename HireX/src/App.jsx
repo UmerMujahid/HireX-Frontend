@@ -5,6 +5,7 @@ import ContactUs from './pages/ContactUs';
 import Login from './pages/Login';
 import GetStarted from './pages/GetStarted';
 import ForgotPassword from './pages/ForgotPassword';
+import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
       {currentPage === 'about' && <AboutUs />}
       {currentPage === 'contact' && <ContactUs />}
       {currentPage === 'login' && <Login onNavigate={setCurrentPage} />}
+      {currentPage === 'signup' && <Signup onNavigate={setCurrentPage} />}
       {currentPage === 'get-started' && <GetStarted onNavigate={setCurrentPage} />}
       {currentPage === 'forgot-password' && <ForgotPassword onNavigate={setCurrentPage} />}
     </div>

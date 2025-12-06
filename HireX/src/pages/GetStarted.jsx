@@ -29,7 +29,7 @@ const GetStarted = ({ onNavigate }) => {
                         <div className="w-full border-t border-gray-400 my-4 mb-12"></div>
 
                         <div className="flex flex-col gap-6 w-full max-w-xs">
-                            <button className="bg-gray-900 text-white font-bold py-4 px-8 rounded-xl text-xl hover:bg-gray-800 transition-colors">
+                            <button onClick={() => onNavigate('signup')} className="bg-gray-900 text-white font-bold py-4 px-8 rounded-xl text-xl hover:bg-gray-800 transition-colors">
                                 Sign Up
                             </button>
                             <button
