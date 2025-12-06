@@ -9,21 +9,15 @@ import SignupHR from './pages/SignupHR';
 import SignupCandidate from './pages/SignupCandidate';
 import SignupInterviewer from './pages/SignupInterviewer';
 import HRDashboard from './pages/HRDashboard';
+import AdminDashboard from './pages/AdminDashboard';
 import Navbar from './components/Navbar';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
 
-  // Dashboard has its own layout, so we might not want the main Navbar there?
-  // Screenshot shows "HireX" in sidebar, and specific top nav.
-  // The global <Navbar> at line 14 should probably be hidden for dashboard pages if we strictly follow the design.
-  // However, for simplicity let's just render the page. The user didn't ask to remove the global navbar explicitly, 
-  // but the dashed lines in design imply a standalone layout. 
-  // I will conditionally render Navbar only if NOT on dashboard.
-
   return (
     <div>
-      {currentPage !== 'hr-dashboard' && <Navbar onNavigate={setCurrentPage} currentPage={currentPage} />}
+      {currentPage !== 'hr-dashboard' && currentPage !== 'admin-dashboard' && <Navbar onNavigate={setCurrentPage} currentPage={currentPage} />}
 
       {currentPage === 'home' && <LandingPage onNavigate={setCurrentPage} />}
       {currentPage === 'about' && <AboutUs onNavigate={setCurrentPage} />}
@@ -36,6 +30,7 @@ function App() {
       {currentPage === 'get-started' && <GetStarted onNavigate={setCurrentPage} />}
       {currentPage === 'forgot-password' && <ForgotPassword onNavigate={setCurrentPage} />}
       {currentPage === 'hr-dashboard' && <HRDashboard onNavigate={setCurrentPage} />}
+      {currentPage === 'admin-dashboard' && <AdminDashboard onNavigate={setCurrentPage} />}
     </div>
   );
 }
