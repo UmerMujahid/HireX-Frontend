@@ -36,7 +36,7 @@ const Navbar = ({ onNavigate, currentPage }) => {
                             Contact Us
                         </button>
                         <a href="#" className="text-gray-900 hover:text-primary font-medium">Login</a>
-                        <Button variant="primary">Get Started</Button>
+                        <Button variant="primary" onClick={() => onNavigate('login')}>Get Started</Button>
                     </div>
 
                     {/* Mobile menu button */}
@@ -58,7 +58,7 @@ const Navbar = ({ onNavigate, currentPage }) => {
                     <button onClick={() => { onNavigate('about'); setIsOpen(false); }} className={`${currentPage === 'about' ? 'text-primary' : 'text-gray-900'} font-medium text-left`}>About Us</button>
                     <button onClick={() => { onNavigate('contact'); setIsOpen(false); }} className={`${currentPage === 'contact' ? 'text-primary' : 'text-gray-900'} font-medium text-left`}>Contact Us</button>
                     <a href="#" className="text-gray-900 font-medium" onClick={() => setIsOpen(false)}>Login</a>
-                    <Button variant="primary" className="w-full">Get Started</Button>
+                    <Button variant="primary" className="w-full" onClick={() => { onNavigate('login'); setIsOpen(false); }}>Get Started</Button>
                 </div>
             )}
         </nav>

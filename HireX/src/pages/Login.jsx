@@ -1,0 +1,34 @@
+import React from 'react';
+import Footer from '../components/Footer';
+import Button from '../components/Button';
+import loginIllustration from '../assets/login-illustration.png';
+
+const Login = () => {
+    return (
+        <div className="min-h-screen bg-white font-sans text-gray-900 flex flex-col">
+
+            <div className="flex-grow flex items-center justify-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex flex-col md:flex-row items-center gap-20 w-full">
+
+                    {/* Left Column: Illustration */}
+                    <div className="flex-1 flex justify-center">
+                        <img
+                            src={loginIllustration}
+                            alt="HireX Collaboration"
+                            className="max-w-md w-full object-contain"
+                        />
+                    </div>
+
+                    {/* Right Column: Content */}
+                    <div className="flex-1 flex flex-col items-center text-center">
+                        <h1 className="text-6xl font-bold mb-8 text-black">HireX</h1>
+
+                        <div className="w-full border-t border-gray-400 my-4"></div>
+                        <div className="mt-auto">
+                            <Footer />
+                        </div>
+                    </div>
+                    );
+};
+
+                    export default Login;

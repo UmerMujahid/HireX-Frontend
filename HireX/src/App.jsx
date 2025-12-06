@@ -3,6 +3,7 @@ import LandingPage from './pages/LandingPage';
 import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
 import Navbar from './components/Navbar';
+import Login from './pages/Login';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -13,6 +14,7 @@ function App() {
       {currentPage === 'home' && <LandingPage />}
       {currentPage === 'about' && <AboutUs />}
       {currentPage === 'contact' && <ContactUs />}
+      {currentPage === 'login' && <Login />}
     </div>
   );
 }
