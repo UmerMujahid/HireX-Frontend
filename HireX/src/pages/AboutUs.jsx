@@ -3,7 +3,7 @@ import Footer from '../components/Footer';
 import Button from '../components/Button';
 import { Brain, FileText, TrendingUp } from 'lucide-react';
 
-const AboutUs = () => {
+const AboutUs = ({ onNavigate }) => {
     return (
         <div className="min-h-screen bg-white font-sans text-gray-900">
 
@@ -67,7 +67,7 @@ const AboutUs = () => {
             <section className="py-4 max-w-4xl mx-auto px-4">
                 <div className="border-2 border-gray-200 rounded-2xl p-12 text-center shadow-lg bg-gray-50">
                     <h2 className="text-3xl font-normal mb-8 text-gray-800">Ready to See the Future of Hiring?</h2>
-                    <Button variant="primary" size="lg" className="px-10 py-3 text-base font-bold shadow-md hover:shadow-lg transition-all">
+                    <Button variant="primary" size="lg" className="px-10 py-3 text-base font-bold shadow-md hover:shadow-lg transition-all" onClick={() => onNavigate('signup-hr')}>
                         Sign Up
                     </Button>
                 </div>

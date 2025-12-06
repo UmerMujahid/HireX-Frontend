@@ -4,6 +4,8 @@ import Button from '../components/Button';
 import Card from '../components/Card';
 import { Users, Briefcase, TrendingUp, Cpu, ClipboardCheck, BarChart3, Clock } from 'lucide-react';
 
+import landingCollaboration from '../assets/landing-collaboration.png';
+
 const LandingPage = ({ onNavigate }) => {
     return (
         <div className="min-h-screen bg-white font-sans text-gray-900">
@@ -29,8 +31,11 @@ const LandingPage = ({ onNavigate }) => {
 
                     {/* Central Illustration Area */}
                     <div className="flex justify-center py-8 md:py-0">
-                        {/* Using Lucide icon as placeholder for the graphic */}
-                        <Users size={120} strokeWidth={1} className="text-gray-900" />
+                        <img
+                            src={landingCollaboration}
+                            alt="Collaboration"
+                            className="w-40 md:w-56 object-contain"
+                        />
                     </div>
 
                     {/* Candidates Card */}

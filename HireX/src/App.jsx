@@ -5,7 +5,9 @@ import ContactUs from './pages/ContactUs';
 import Login from './pages/Login';
 import GetStarted from './pages/GetStarted';
 import ForgotPassword from './pages/ForgotPassword';
-import Signup from './pages/Signup';
+import SignupHR from './pages/SignupHR';
+import SignupCandidate from './pages/SignupCandidate';
+import SignupInterviewer from './pages/SignupInterviewer';
 import HRDashboard from './pages/HRDashboard';
 import Navbar from './components/Navbar';
 
@@ -24,10 +26,13 @@ function App() {
       {currentPage !== 'hr-dashboard' && <Navbar onNavigate={setCurrentPage} currentPage={currentPage} />}
 
       {currentPage === 'home' && <LandingPage onNavigate={setCurrentPage} />}
-      {currentPage === 'about' && <AboutUs />}
+      {currentPage === 'about' && <AboutUs onNavigate={setCurrentPage} />}
       {currentPage === 'contact' && <ContactUs />}
       {currentPage === 'login' && <Login onNavigate={setCurrentPage} />}
-      {currentPage === 'signup' && <Signup onNavigate={setCurrentPage} />}
+      {currentPage === 'signup' && <SignupHR onNavigate={setCurrentPage} />}
+      {currentPage === 'signup-hr' && <SignupHR onNavigate={setCurrentPage} />}
+      {currentPage === 'signup-candidate' && <SignupCandidate onNavigate={setCurrentPage} />}
+      {currentPage === 'signup-interviewer' && <SignupInterviewer onNavigate={setCurrentPage} />}
       {currentPage === 'get-started' && <GetStarted onNavigate={setCurrentPage} />}
       {currentPage === 'forgot-password' && <ForgotPassword onNavigate={setCurrentPage} />}
       {currentPage === 'hr-dashboard' && <HRDashboard onNavigate={setCurrentPage} />}

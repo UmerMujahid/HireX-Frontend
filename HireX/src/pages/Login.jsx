@@ -94,7 +94,7 @@ const Login = ({ onNavigate }) => {
                             </div>
 
                             <p className="mt-8 text-center text-sm font-bold">
-                                New to HireX? <button onClick={() => onNavigate('signup')} className="text-cyan-400 hover:text-cyan-500">SignUp</button>
+                                New to HireX? <button onClick={() => onNavigate('signup-hr')} className="text-cyan-400 hover:text-cyan-500">SignUp</button>
                             </p>
 
                         </div>
