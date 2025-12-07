@@ -20,16 +20,16 @@ const GetStarted = ({ onNavigate }) => {
 
                     {/* Right Column: Content */}
                     <div className="flex-1 flex flex-col items-center text-center">
-                        <h1 className="text-6xl font-bold mb-8 text-black">HireX</h1>
+                        <h1 className="text-5xl font-bold mb-8 text-black">HireX</h1>
 
                         <div className="w-full border-t border-gray-400 my-4"></div>
-                        <p className="text-xl font-semibold text-black py-2">
+                        <p className="text-lg font-semibold text-black py-2">
                             Transform Your Hiring Process effortlessly !
                         </p>
                         <div className="w-full border-t border-gray-400 my-4 mb-12"></div>
 
                         <div className="flex flex-col gap-6 w-full max-w-xs">
-                            <button onClick={() => onNavigate('signup-hr')} className="bg-gray-900 text-white font-bold py-4 px-8 rounded-xl text-xl hover:bg-gray-800 transition-colors">
+                            <button onClick={() => onNavigate('signup-hr')} className="bg-gray-900 text-white font-bold py-4 px-8 rounded-xl text-lg hover:bg-gray-800 transition-colors">
                                 Sign Up
                             </button>
                             <button

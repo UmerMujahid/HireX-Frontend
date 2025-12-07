@@ -10,19 +10,19 @@ const AboutUs = ({ onNavigate }) => {
             {/* Header Section */}
             <section className="pt-16 pb-12 text-center max-w-7xl mx-auto px-4">
                 <div className="relative inline-block mb-12">
-                    <h1 className="text-5xl font-bold z-10 relative px-4 inline-block border-b-4 border-gray-900 pb-2">About Us</h1>
+                    <h1 className="text-4xl font-bold z-10 relative px-4 inline-block border-b-4 border-gray-900 pb-2">About Us</h1>
                 </div>
 
-                <p className="max-w-5xl mx-auto text-lg md:text-xl text-gray-800 leading-relaxed">
+                <p className="max-w-5xl mx-auto text-base md:text-lg text-gray-800 leading-relaxed">
                     HireX is a unified recruitment platform that uses AI to automate job matching, application ranking, and interview scheduling. We offer organizations an efficient solution to manage the entire hiring process and provide candidates with a streamlined experience and transparent application insights.
                 </p>
             </section>
 
             {/* Core Values Section */}
-            <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl font-bold mb-4">Our Core Values</h2>
-                    <p className="text-gray-600">
+            <section className="pt-2 pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-10">
+                    <h2 className="text-3xl font-bold mb-4">Our Core Values</h2>
+                    <p className="text-gray-600 text-sm">
                         HireX combines cutting edge AI with intuitive desgin to transform your recruiting process
                     </p>
                 </div>

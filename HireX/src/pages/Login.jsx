@@ -20,22 +20,22 @@ const Login = ({ onNavigate }) => {
                         <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 p-8 md:p-10">
 
                             <div className="text-center mb-8">
-                                <h2 className="text-xl font-bold mb-2">Welcome Back To HireX</h2>
-                                <p className="text-gray-500">Sign In to continue to your account</p>
+                                <h2 className="text-lg font-bold mb-2">Welcome Back To HireX</h2>
+                                <p className="text-gray-500 text-sm">Sign In to continue to your account</p>
                             </div>
 
                             <form className="space-y-6">
                                 <div>
-                                    <label className="block text-sm font-bold text-gray-900 mb-2">Email Address</label>
+                                    <label className="block text-xs font-bold text-gray-900 mb-2">Email Address</label>
                                     <input
                                         type="email"
                                         placeholder="name@gmail.com"
-                                        className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none"
+                                        className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 text-sm placeholder-gray-400 focus:outline-none"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-bold text-gray-900 mb-2">Password</label>
+                                    <label className="block text-xs font-bold text-gray-900 mb-2">Password</label>
                                     <div className="relative">
                                         <input
                                             type={showPassword ? "text" : "password"}

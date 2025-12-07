@@ -9,7 +9,7 @@ const ContactUs = () => {
             {/* Header Section */}
             <section className="pt-16 pb-8 text-center max-w-7xl mx-auto px-4">
                 <div className="relative inline-block mb-12">
-                    <h1 className="text-5xl font-bold z-10 relative px-4 inline-block border-b-4 border-gray-900 pb-2">Contact Us</h1>
+                    <h1 className="text-4xl font-bold z-10 relative px-4 inline-block border-b-4 border-gray-900 pb-2">Contact Us</h1>
                 </div>
             </section>
 
@@ -18,8 +18,8 @@ const ContactUs = () => {
                     {/* Left Column: Form */}
                     <div className="flex-1 border border-gray-300 rounded-3xl p-8 shadow-sm">
                         <div className="text-center mb-8">
-                            <h2 className="text-2xl font-bold mb-2">Get In Touch</h2>
-                            <p className="text-gray-600 text-lg">
+                            <h2 className="text-xl font-bold mb-2">Get In Touch</h2>
+                            <p className="text-gray-600 text-base">
                                 We are happy to answer you questions about HireX
                             </p>
                         </div>
@@ -75,7 +75,7 @@ const ContactUs = () => {
 
                     {/* Right Column: Info */}
                     <div className="flex-1 flex flex-col items-center pt-8">
-                        <h2 className="text-2xl font-bold mb-10 text-center">Need Immediate Assistance?</h2>
+                        <h2 className="text-xl font-bold mb-10 text-center">Need Immediate Assistance?</h2>
 
                         <div className="space-y-6 w-full max-w-md">
                             <div className="bg-gray-200 rounded-lg py-3 px-6 text-center font-bold text-gray-900 text-sm md:text-base">

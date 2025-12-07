@@ -27,12 +27,12 @@ const Signup = ({ onNavigate }) => {
                         className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl text-center max-w-lg w-full transform scale-100 transition-all border border-gray-900 mx-4"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <h2 className="text-4xl font-bold mb-8 leading-tight text-gray-900">
+                        <h2 className="text-3xl font-bold mb-8 leading-tight text-gray-900">
                             Account Creation <br /> Successfull
                         </h2>
 
                         <button
-                            className="w-full font-bold py-4 rounded-xl text-xl hover:opacity-90 transition-opacity text-gray-900 shadow-md transform hover:scale-[1.02] transition-transform"
+                            className="w-full font-bold py-4 rounded-xl text-lg hover:opacity-90 transition-opacity text-gray-900 shadow-md transform hover:scale-[1.02] transition-transform"
                             style={{ backgroundColor: '#a3e635' }}
                             onClick={() => {
                                 if (role === 'candidate') onNavigate('candidate-dashboard');
@@ -57,8 +57,8 @@ const Signup = ({ onNavigate }) => {
                         <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 p-8 md:p-10">
 
                             <div className="text-center mb-6">
-                                <h2 className="text-2xl font-bold mb-2">Start Your Hiring Revolution</h2>
-                                <p className="text-gray-500">Create your account and get started today</p>
+                                <h2 className="text-xl font-bold mb-2">Start Your Hiring Revolution</h2>
+                                <p className="text-gray-500 text-sm">Create your account and get started today</p>
                             </div>
 
                             {/* Role Selector */}
@@ -96,7 +96,7 @@ const Signup = ({ onNavigate }) => {
                                     <input
                                         type="text"
                                         placeholder="Enter Your Full Name"
-                                        className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none"
+                                        className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none text-sm"
                                     />
                                 </div>
 
@@ -105,7 +105,7 @@ const Signup = ({ onNavigate }) => {
                                     <input
                                         type="email"
                                         placeholder="name@gmail.com"
-                                        className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none"
+                                        className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none text-sm"
                                     />
                                 </div>
 
@@ -116,7 +116,7 @@ const Signup = ({ onNavigate }) => {
                                         <input
                                             type="text"
                                             placeholder="Limited Inc."
-                                            className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none"
+                                            className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none text-sm"
                                         />
                                     </div>
                                 )}
@@ -127,7 +127,7 @@ const Signup = ({ onNavigate }) => {
                                         <input
                                             type={showPassword ? "text" : "password"}
                                             placeholder="Enter your password"
-                                            className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none pr-10"
+                                            className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none pr-10 text-sm"
                                         />
                                         <button
                                             type="button"
@@ -145,7 +145,7 @@ const Signup = ({ onNavigate }) => {
                                         <input
                                             type={showConfirmPassword ? "text" : "password"}
                                             placeholder="Re-Enter your password"
-                                            className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none pr-10"
+                                            className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none pr-10 text-sm"
                                         />
                                         <button
                                             type="button"
@@ -161,14 +161,14 @@ const Signup = ({ onNavigate }) => {
                                     <div className="flex items-center h-5">
                                         <input id="terms" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary" required />
                                     </div>
-                                    <label htmlFor="terms" className="ml-2 text-sm font-medium text-gray-900">
+                                    <label htmlFor="terms" className="ml-2 text-xs font-medium text-gray-900">
                                         I agree to the <a href="#" className="text-cyan-400 hover:underline">Terms Of Service</a> and <a href="#" className="text-cyan-400 hover:underline">Privacy Policy</a>
                                     </label>
                                 </div>
 
                                 <button
                                     type="submit"
-                                    className="w-full text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all mt-2"
+                                    className="w-full text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all mt-2 text-base"
                                     style={{ backgroundColor: '#00bbd3' }}
                                 >
                                     Create Account

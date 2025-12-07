@@ -52,13 +52,13 @@ const SignupCandidate = ({ onNavigate }) => {
                         <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 p-8 md:p-10">
 
                             <div className="text-center mb-6">
-                                <h2 className="text-2xl font-bold mb-2">Start Your Hiring Revolution</h2>
-                                <p className="text-gray-500">Create your account and get started today</p>
+                                <h2 className="text-xl font-bold mb-2">Start Your Hiring Revolution</h2>
+                                <p className="text-gray-500 text-xs">Create your account and get started today</p>
                             </div>
 
                             {/* Role Selector */}
                             <div className="flex items-center justify-between gap-2 mb-6">
-                                <span className="text-sm font-bold text-gray-900 whitespace-nowrap">I am a</span>
+                                <span className="text-xs font-bold text-gray-900 whitespace-nowrap">I am a</span>
 
                                 {/* HR Manager (Navigate) */}
                                 <button
@@ -89,32 +89,32 @@ const SignupCandidate = ({ onNavigate }) => {
 
                             <form className="space-y-4" onSubmit={handleSubmit}>
                                 <div>
-                                    <label className="block text-sm font-bold text-gray-900 mb-1">Full Name</label>
+                                    <label className="block text-xs font-bold text-gray-900 mb-1">Full Name</label>
                                     <input
                                         type="text"
                                         placeholder="Enter Your Full Name"
-                                        className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none"
+                                        className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 text-sm placeholder-gray-400 focus:outline-none"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-bold text-gray-900 mb-1">Email Address</label>
+                                    <label className="block text-xs font-bold text-gray-900 mb-1">Email Address</label>
                                     <input
                                         type="email"
                                         placeholder="name@gmail.com"
-                                        className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none"
+                                        className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 text-sm placeholder-gray-400 focus:outline-none"
                                     />
                                 </div>
 
                                 {/* Company Name - Excluded for Candidate */}
 
                                 <div>
-                                    <label className="block text-sm font-bold text-gray-900 mb-1">Password</label>
+                                    <label className="block text-xs font-bold text-gray-900 mb-1">Password</label>
                                     <div className="relative">
                                         <input
                                             type={showPassword ? "text" : "password"}
                                             placeholder="Enter your password"
-                                            className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none pr-10"
+                                            className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 text-sm placeholder-gray-400 focus:outline-none pr-10"
                                         />
                                         <button
                                             type="button"
@@ -127,12 +127,12 @@ const SignupCandidate = ({ onNavigate }) => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-bold text-gray-900 mb-1">Confirm Password</label>
+                                    <label className="block text-xs font-bold text-gray-900 mb-1">Confirm Password</label>
                                     <div className="relative">
                                         <input
                                             type={showConfirmPassword ? "text" : "password"}
                                             placeholder="Re-Enter your password"
-                                            className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none pr-10"
+                                            className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 text-sm placeholder-gray-400 focus:outline-none pr-10"
                                         />
                                         <button
                                             type="button"
@@ -148,7 +148,7 @@ const SignupCandidate = ({ onNavigate }) => {
                                     <div className="flex items-center h-5">
                                         <input id="terms" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary" required />
                                     </div>
-                                    <label htmlFor="terms" className="ml-2 text-sm font-medium text-gray-900">
+                                    <label htmlFor="terms" className="ml-2 text-xs font-medium text-gray-900">
                                         I agree to the <a href="#" className="text-cyan-400 hover:underline">Terms Of Service</a> and <a href="#" className="text-cyan-400 hover:underline">Privacy Policy</a>
                                     </label>
                                 </div>
