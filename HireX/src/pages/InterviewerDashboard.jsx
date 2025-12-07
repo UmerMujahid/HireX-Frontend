@@ -1,9 +1,64 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from '../components/Footer';
 import InterviewerNavbar from '../components/InterviewerNavbar';
 import { Calendar, Clock, Video, User, CheckCircle, AlertCircle } from 'lucide-react';
 
+const InterviewCard = ({ interview }) => {
+    const app = interview.application || {};
+    const candidate = app.applied_by || {};
+    return (
+        <div className="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
+            <div className="flex justify-between items-start mb-4">
+                <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
+                        <User size={24} />
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-gray-900 text-sm">{candidate.full_name || candidate.email}</h3>
+                        <p className="text-gray-500 text-xs">{app.applied_for ? app.applied_for.title : 'Application'}</p>
+                    </div>
+                </div>
+                <span className="bg-cyan-400 text-white text-[10px] font-bold px-3 py-1 rounded-full">{interview.date}</span>
+            </div>
+
+            <div className="space-y-2 mb-6 text-xs text-gray-600 font-medium">
+                <div className="flex items-center gap-2">
+                    <Calendar size={16} className="text-blue-500" />
+                    <span>{new Date(interview.date).toLocaleDateString()}</span>
+                    <Clock size={16} className="text-blue-500 ml-2" />
+                    <span>{new Date(interview.start_time).toLocaleTimeString()}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <Video size={16} className="text-gray-900" />
+                    <span>{interview.duration} mins</span>
+                </div>
+            </div>
+
+            <button className="w-full bg-[#10b981] text-white font-bold py-3 rounded-lg hover:bg-[#059669] transition-colors text-sm">Join Meeting / Prep</button>
+        </div>
+    );
+};
+
 const InterviewerDashboard = ({ onNavigate }) => {
+    const [interviews, setInterviews] = useState([]);
+
+    useEffect(() => {
+        let mounted = true;
+        const load = async () => {
+            try {
+                const token = localStorage.getItem('hirex_access');
+                const res = await fetch('http://127.0.0.1:8000/jobs/interviews/', { headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) } });
+                if (!res.ok) throw await res.json();
+                const data = await res.json();
+                if (mounted) setInterviews(data || []);
+            } catch (e) {
+                console.error('Failed to load interviews', e);
+            }
+        };
+        load();
+        return () => { mounted = false };
+    }, []);
+
     return (
         <div className="min-h-screen bg-white font-sans text-gray-900 flex flex-col">
             <InterviewerNavbar onNavigate={onNavigate} activePage="dashboard" />
@@ -52,139 +107,14 @@ const InterviewerDashboard = ({ onNavigate }) => {
                         <button className="bg-gray-200 text-gray-900 px-4 py-2 rounded-lg font-bold text-xs">Upcoming (4)</button>
                         <button className="bg-gray-100 text-gray-500 px-4 py-2 rounded-lg font-bold text-xs hover:bg-gray-200 hover:text-gray-900 transition-colors">Past Interviews (5)</button>
                     </div>
-
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Card 1 */}
-                        <div className="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
-                            <div className="flex justify-between items-start mb-4">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
-                                        <User size={24} />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-bold text-gray-900 text-sm">Sarah Martinez</h3>
-                                        <p className="text-gray-500 text-xs">Product Designer</p>
-                                    </div>
-                                </div>
-                                <span className="bg-cyan-400 text-white text-[10px] font-bold px-3 py-1 rounded-full">Upcoming</span>
-                            </div>
-
-                            <div className="space-y-2 mb-6 text-xs text-gray-600 font-medium">
-                                <div className="flex items-center gap-2">
-                                    <Calendar size={16} className="text-blue-500" />
-                                    <span>Nov 14, 2025</span>
-                                    <Clock size={16} className="text-blue-500 ml-2" />
-                                    <span>10:00 AM</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Video size={16} className="text-gray-900" />
-                                    <span>Portfolio Review</span>
-                                </div>
-                            </div>
-
-                            <button className="w-full bg-[#10b981] text-white font-bold py-3 rounded-lg hover:bg-[#059669] transition-colors text-sm">
-                                Join Meeting / Prep
-                            </button>
-                        </div>
-
-                        {/* Card 2 */}
-                        <div className="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
-                            <div className="flex justify-between items-start mb-4">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center text-pink-600">
-                                        <User size={24} />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-bold text-gray-900 text-sm">Emily Watson</h3>
-                                        <p className="text-gray-500 text-xs">Full Stack Engineer</p>
-                                    </div>
-                                </div>
-                                <span className="bg-cyan-400 text-white text-[10px] font-bold px-3 py-1 rounded-full">Upcoming</span>
-                            </div>
-
-                            <div className="space-y-2 mb-6 text-xs text-gray-600 font-medium">
-                                <div className="flex items-center gap-2">
-                                    <Calendar size={16} className="text-blue-500" />
-                                    <span>Dec 14, 2025</span>
-                                    <Clock size={16} className="text-blue-500 ml-2" />
-                                    <span>9:00 AM</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Video size={16} className="text-gray-900" />
-                                    <span>System Design Interview</span>
-                                </div>
-                            </div>
-
-                            <button className="w-full bg-[#10b981] text-white font-bold py-3 rounded-lg hover:bg-[#059669] transition-colors text-sm">
-                                Join Meeting / Prep
-                            </button>
-                        </div>
-
-                        {/* Card 3 */}
-                        <div className="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
-                            <div className="flex justify-between items-start mb-4">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
-                                        <User size={24} />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-bold text-gray-900 text-sm">David Kim</h3>
-                                        <p className="text-gray-500 text-xs">Data Scientist</p>
-                                    </div>
-                                </div>
-                                <span className="bg-cyan-400 text-white text-[10px] font-bold px-3 py-1 rounded-full">Upcoming</span>
-                            </div>
-
-                            <div className="space-y-2 mb-6 text-xs text-gray-600 font-medium">
-                                <div className="flex items-center gap-2">
-                                    <Calendar size={16} className="text-blue-500" />
-                                    <span>Nov 4, 2025</span>
-                                    <Clock size={16} className="text-blue-500 ml-2" />
-                                    <span>11:00 AM</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Video size={16} className="text-gray-900" />
-                                    <span>Technical Review</span>
-                                </div>
-                            </div>
-
-                            <button className="w-full bg-[#10b981] text-white font-bold py-3 rounded-lg hover:bg-[#059669] transition-colors text-sm">
-                                Join Meeting / Prep
-                            </button>
-                        </div>
-
-                        {/* Card 4 */}
-                        <div className="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
-                            <div className="flex justify-between items-start mb-4">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center text-pink-600">
-                                        <User size={24} />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-bold text-gray-900 text-sm">Martines Jessica</h3>
-                                        <p className="text-gray-500 text-xs">Marketing Manager</p>
-                                    </div>
-                                </div>
-                                <span className="bg-cyan-400 text-white text-[10px] font-bold px-3 py-1 rounded-full">Upcoming</span>
-                            </div>
-
-                            <div className="space-y-2 mb-6 text-xs text-gray-600 font-medium">
-                                <div className="flex items-center gap-2">
-                                    <Calendar size={16} className="text-blue-500" />
-                                    <span>Aug 14, 2025</span>
-                                    <Clock size={16} className="text-blue-500 ml-2" />
-                                    <span>8:00 AM</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Video size={16} className="text-gray-900" />
-                                    <span>Behavioral Interview</span>
-                                </div>
-                            </div>
-
-                            <button className="w-full bg-[#10b981] text-white font-bold py-3 rounded-lg hover:bg-[#059669] transition-colors text-sm">
-                                Join Meeting / Prep
-                            </button>
-                        </div>
+                        {interviews.length === 0 ? (
+                            <p className="text-sm text-gray-500">No interviews found</p>
+                        ) : (
+                            interviews.map(i => (
+                                <InterviewCard interview={i} key={i.id} />
+                            ))
+                        )}
                     </div>
 
                 </div>

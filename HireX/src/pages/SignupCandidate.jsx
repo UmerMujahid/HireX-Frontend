@@ -2,15 +2,29 @@ import React, { useState } from 'react';
 import Footer from '../components/Footer';
 import AuthSidebar from '../components/AuthSidebar';
 import { Eye, EyeOff, Briefcase, User } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const SignupCandidate = ({ onNavigate }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [fullName, setFullName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState(null);
+    const auth = useAuth();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setShowModal(true);
+        setError(null);
+        if (password !== confirmPassword) return setError('Passwords do not match');
+        try {
+            await auth.signup({ email, full_name: fullName, password, role: 'candidate' });
+            setShowModal(true);
+        } catch (err) {
+            setError(err?.detail || JSON.stringify(err));
+        }
     };
 
     return (
@@ -91,6 +105,8 @@ const SignupCandidate = ({ onNavigate }) => {
                                 <div>
                                     <label className="block text-xs font-bold text-gray-900 mb-1">Full Name</label>
                                     <input
+                                        value={fullName}
+                                        onChange={(e) => setFullName(e.target.value)}
                                         type="text"
                                         placeholder="Enter Your Full Name"
                                         className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 text-sm placeholder-gray-400 focus:outline-none"
@@ -100,6 +116,8 @@ const SignupCandidate = ({ onNavigate }) => {
                                 <div>
                                     <label className="block text-xs font-bold text-gray-900 mb-1">Email Address</label>
                                     <input
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
                                         type="email"
                                         placeholder="name@gmail.com"
                                         className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 text-sm placeholder-gray-400 focus:outline-none"
@@ -112,6 +130,8 @@ const SignupCandidate = ({ onNavigate }) => {
                                     <label className="block text-xs font-bold text-gray-900 mb-1">Password</label>
                                     <div className="relative">
                                         <input
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
                                             type={showPassword ? "text" : "password"}
                                             placeholder="Enter your password"
                                             className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 text-sm placeholder-gray-400 focus:outline-none pr-10"
@@ -160,6 +180,7 @@ const SignupCandidate = ({ onNavigate }) => {
                                 >
                                     Create Account
                                 </button>
+                                {error && <p className="text-sm text-red-600">{error}</p>}
                             </form>
 
                             <p className="mt-6 text-center text-sm font-bold text-gray-900">

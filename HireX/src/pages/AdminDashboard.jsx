@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from '../components/Footer';
 import {
     Users,
@@ -11,6 +11,64 @@ import {
 } from 'lucide-react';
 
 const AdminDashboard = ({ onNavigate }) => {
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [form, setForm] = useState({ email: '', full_name: '', password: '', role: 'hr', company: '' });
+
+    useEffect(() => {
+        let mounted = true;
+        const load = async () => {
+            setLoading(true);
+            try {
+                const token = localStorage.getItem('hirex_access');
+                const res = await fetch('http://127.0.0.1:8000/auth/admin/list-users/', { headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) } });
+                const data = await res.json();
+                if (!res.ok) throw data;
+                if (mounted) setUsers(data || []);
+            } catch (e) {
+                console.error('Failed to load users', e);
+            } finally { setLoading(false); }
+        };
+        load();
+        return () => { mounted = false };
+    }, []);
+
+    const handleCreate = async (e) => {
+        e.preventDefault();
+        try {
+            const token = localStorage.getItem('hirex_access');
+            const res = await fetch('http://127.0.0.1:8000/auth/admin/create-user/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+                body: JSON.stringify(form)
+            });
+            const data = await res.json();
+            if (!res.ok) throw data;
+            setUsers(u => [data, ...u]);
+            setForm({ email: '', full_name: '', password: '', role: 'hr', company: '' });
+            alert('User created');
+        } catch (err) {
+            console.error(err);
+            alert('Failed to create user: ' + JSON.stringify(err));
+        }
+    };
+
+    const handleDelete = async (id) => {
+        if (!confirm('Delete user?')) return;
+        try {
+            const token = localStorage.getItem('hirex_access');
+            const res = await fetch(`http://127.0.0.1:8000/auth/admin/delete-user/${id}/`, { method: 'DELETE', headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) } });
+            if (res.status !== 204) {
+                const data = await res.json();
+                throw data;
+            }
+            setUsers(u => u.filter(x => x.id !== id));
+        } catch (e) {
+            console.error('Failed to delete', e);
+            alert('Delete failed');
+        }
+    };
+
     return (
         <div className="min-h-screen bg-gray-50 font-sans text-gray-900 flex flex-col">
 
@@ -115,20 +173,40 @@ const AdminDashboard = ({ onNavigate }) => {
                     {/* User Management */}
                     <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 h-full">
                         <h2 className="text-lg font-bold text-gray-900 mb-8 text-center">User Management</h2>
-
                         <div className="space-y-6">
-                            <div className="bg-gray-50 p-6 rounded-xl text-center">
-                                <p className="text-gray-600 font-medium mb-4 text-sm">Add / remove roles</p>
-                                <button className="bg-[#84cc16] hover:bg-[#65a30d] text-white font-bold py-2.5 px-6 rounded-lg shadow-sm transition-colors w-full max-w-[180px] text-sm">
-                                    Manage roles
-                                </button>
-                            </div>
+                            <form onSubmit={handleCreate} className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <input className="border p-2 rounded" placeholder="Email" value={form.email} onChange={(e) => setForm(f => ({...f, email: e.target.value}))} />
+                                <input className="border p-2 rounded" placeholder="Full name" value={form.full_name} onChange={(e) => setForm(f => ({...f, full_name: e.target.value}))} />
+                                <input className="border p-2 rounded" placeholder="Password" type="password" value={form.password} onChange={(e) => setForm(f => ({...f, password: e.target.value}))} />
+                                <select className="border p-2 rounded" value={form.role} onChange={(e) => setForm(f => ({...f, role: e.target.value}))}>
+                                    <option value="hr">HR</option>
+                                    <option value="interviewer">Interviewer</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                                <input className="border p-2 rounded md:col-span-2" placeholder="Company (optional)" value={form.company} onChange={(e) => setForm(f => ({...f, company: e.target.value}))} />
+                                <div className="md:col-span-2 flex gap-3">
+                                    <button type="submit" className="bg-[#84cc16] hover:bg-[#65a30d] text-white font-bold py-2.5 px-6 rounded-lg shadow-sm transition-colors">Create User</button>
+                                    <button type="button" onClick={() => setForm({ email: '', full_name: '', password: '', role: 'hr', company: '' })} className="border px-4 rounded">Reset</button>
+                                </div>
+                            </form>
 
-                            <div className="bg-gray-50 p-6 rounded-xl text-center">
-                                <p className="text-gray-600 font-medium mb-4 text-sm">Manage Users Info</p>
-                                <button className="bg-[#84cc16] hover:bg-[#65a30d] text-white font-bold py-2.5 px-6 rounded-lg shadow-sm transition-colors w-full max-w-[180px] text-sm">
-                                    Edit Users
-                                </button>
+                            <div>
+                                <h4 className="text-sm font-bold mb-2">Existing Users</h4>
+                                {loading ? <p>Loading…</p> : (
+                                    <ul className="space-y-2">
+                                        {users.map(u => (
+                                            <li key={u.id} className="flex justify-between items-center p-2 border rounded">
+                                                <div>
+                                                    <p className="text-sm font-medium">{u.full_name || u.email}</p>
+                                                    <p className="text-xs text-gray-500">{u.email} — {u.role}</p>
+                                                </div>
+                                                <div>
+                                                    <button onClick={() => handleDelete(u.id)} className="text-red-600 text-sm font-bold">Delete</button>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
                             </div>
                         </div>
                     </div>

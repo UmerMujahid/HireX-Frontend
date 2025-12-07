@@ -9,104 +9,25 @@ import {
     User
 } from 'lucide-react';
 
-const ApplicationsList = ({ onScheduleClick }) => {
-    // Dummy Data matching screenshot
-    const candidates = [
-        {
-            id: 1,
-            name: "Alexandra Martinez",
-            title: "View Profile",
-            matchScore: 95,
-            filled: 95,
-            experience: "8 years, Senior Developer",
-            status: "New",
-            statusColor: "bg-blue-100 text-blue-700",
-            rating: 4.8,
-            feedback: "Strong technical skills"
-        },
-        {
-            id: 2,
-            name: "David Chan",
-            title: "View Profile",
-            matchScore: 92,
-            filled: 92,
-            experience: "7 years, Full Stack Engineer",
-            status: "Shortlisted",
-            statusColor: "bg-amber-100 text-amber-700",
-            rating: 4.5,
-            feedback: "Excellent communication"
-        },
-        {
-            id: 3,
-            name: "Sarah Johnson",
-            title: "View Profile",
-            matchScore: 88,
-            filled: 88,
-            experience: "6 years, Backend Specialist",
-            status: "Interview Scheduled",
-            statusColor: "bg-purple-100 text-purple-700",
-            rating: 4.7,
-            feedback: "Great problem-solving"
-        },
-        {
-            id: 4,
-            name: "Michael Thompson",
-            title: "View Profile",
-            matchScore: 85,
-            filled: 85,
-            experience: "5 years, Software Engineer",
-            status: "New",
-            statusColor: "bg-blue-100 text-blue-700",
-            rating: 4.3,
-            feedback: "Good cultural fit"
-        },
-        {
-            id: 5,
-            name: "M Basim Irfan",
-            title: "View Profile",
-            matchScore: 82,
-            filled: 82,
-            experience: "9 years, Tech Lead",
-            status: "Shortlisted",
-            statusColor: "bg-amber-100 text-amber-700",
-            rating: 4.6,
-            feedback: "Leadership Potential"
-        },
-        {
-            id: 6,
-            name: "Lisa Anderson",
-            title: "View Profile",
-            matchScore: 65,
-            filled: 65,
-            experience: "3 years, Junior Developer",
-            status: "New",
-            statusColor: "bg-blue-100 text-blue-700",
-            rating: 3.9,
-            feedback: "Eager to learn",
-            scoreColor: "bg-yellow-400" // Custom color for lower score
-        },
-        {
-            id: 7,
-            name: "Robert Kim",
-            title: "View Profile",
-            matchScore: 58,
-            filled: 58,
-            experience: "6 years, Backend Specialist",
-            status: "New",
-            statusColor: "bg-blue-100 text-blue-700",
-            rating: 3.7,
-            feedback: "Growing skillset",
-            scoreColor: "bg-gray-500" // Custom color for lowest score
-        }
-    ];
-
+const ApplicationsList = ({ onScheduleClick, applications = [] }) => {
     const [topK, setTopK] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [localApps, setLocalApps] = useState(applications || []);
+    const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
+    const [scheduleForm, setScheduleForm] = useState({ application_id: null, interviewer: '', date: '', start_time: '', duration: 60 });
+    const [statusEditingId, setStatusEditingId] = useState(null);
+    const [statusValue, setStatusValue] = useState('');
+
+    // Keep localApps in sync when prop changes
+    React.useEffect(() => {
+        setLocalApps(applications || []);
+    }, [applications]);
 
     return (
         <div className="flex-1 p-8">
             <header className="mb-8">
                 <h1 className="text-2xl font-bold text-gray-900">Candidate Applications Report</h1>
-                <p className="text-gray-500 text-sm mt-1">{candidates.length} candidates found</p>
+                <p className="text-gray-500 text-sm mt-1">{localApps.length} candidates found</p>
             </header>
 
             {/* Filters Bar */}
@@ -162,40 +83,33 @@ const ApplicationsList = ({ onScheduleClick }) => {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-50">
-                        {candidates.map((candidate) => (
+                        {localApps.map((candidate) => (
                             <tr key={candidate.id} className="hover:bg-gray-50 transition-colors">
                                 <td className="px-6 py-4">
-                                    <h3 className="text-sm font-bold text-gray-900">{candidate.name}</h3>
+                                    <h3 className="text-sm font-bold text-gray-900">{candidate.applied_by || candidate.applied_by}</h3>
                                     <div className="flex items-center gap-1 text-gray-500 text-xs mt-0.5 cursor-pointer hover:text-emerald-600 transition-colors">
-                                        {candidate.title} <ArrowRight size={12} />
+                                        {candidate.applied_for?.title || 'Job'} <ArrowRight size={12} />
                                     </div>
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="flex items-center gap-2 mb-1">
-                                        <span className={`text-sm font-bold ${candidate.scoreColor ? 'text-gray-900' : 'text-emerald-600'}`}>{candidate.matchScore}%</span>
-                                        {candidate.matchScore > 80 && <Star size={14} className="text-yellow-400 fill-yellow-400" />}
-                                    </div>
-                                    <div className="w-32 h-2 bg-gray-100 rounded-full overflow-hidden">
-                                        <div
-                                            className={`h-full rounded-full ${candidate.scoreColor || 'bg-emerald-500'}`}
-                                            style={{ width: `${candidate.filled}%` }}
-                                        ></div>
+                                        <span className={`text-sm font-bold text-emerald-600`}>{/* placeholder score */}—</span>
                                     </div>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <span className="text-sm text-gray-700 font-medium">{candidate.experience}</span>
+                                    <span className="text-sm text-gray-700 font-medium">{candidate.applied_for?.title || ''}</span>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <span className={`px-2 py-1 rounded text-xs font-bold ${candidate.statusColor}`}>
+                                    <span className={`px-2 py-1 rounded text-xs font-bold ${candidate.status === 'shortlisted' ? 'bg-amber-100 text-amber-700' : candidate.status === 'interview' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}`}>
                                         {candidate.status}
                                     </span>
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="flex items-center gap-1.5">
                                         <Star size={14} className="text-yellow-400 fill-yellow-400" />
-                                        <span className="text-sm font-bold text-gray-900">{candidate.rating}/5</span>
+                                        <span className="text-sm font-bold text-gray-900">—/5</span>
                                     </div>
-                                    <p className="text-xs text-gray-500 mt-0.5">{candidate.feedback}</p>
+                                    <p className="text-xs text-gray-500 mt-0.5">{candidate.description || ''}</p>
                                 </td>
                                 <td className="px-6 py-4 text-right">
                                     <div className="flex items-center justify-end gap-2">
@@ -203,13 +117,56 @@ const ApplicationsList = ({ onScheduleClick }) => {
                                             <MessageSquare size={14} />
                                             View Feedback
                                         </button>
-                                        <button
-                                            className="flex items-center gap-1.5 bg-blue-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-600 transition-colors"
-                                            onClick={onScheduleClick}
-                                        >
-                                            <Calendar size={14} />
-                                            Schedule Interview
-                                        </button>
+                                        {candidate.resume ? (
+                                            <a href={candidate.resume} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 border border-gray-300 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-gray-50 transition-colors">
+                                                <Download size={14} />
+                                                Resume
+                                            </a>
+                                        ) : null}
+                                            <button
+                                                className="flex items-center gap-1.5 bg-blue-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-600 transition-colors"
+                                                onClick={() => { setScheduleForm({ application_id: candidate.id, interviewer: '', date: '', start_time: '', duration: 60 }); setScheduleModalOpen(true); }}
+                                            >
+                                                <Calendar size={14} />
+                                                Schedule Interview
+                                            </button>
+                                            <div>
+                                                {statusEditingId === candidate.id ? (
+                                                    <div className="flex items-center gap-2">
+                                                        <select value={statusValue} onChange={(e) => setStatusValue(e.target.value)} className="px-2 py-1 border rounded text-xs">
+                                                            <option value="pending">pending</option>
+                                                            <option value="shortlisted">shortlisted</option>
+                                                            <option value="rejected">rejected</option>
+                                                            <option value="interview">interview</option>
+                                                            <option value="hired">hired</option>
+                                                        </select>
+                                                        <button onClick={async () => {
+                                                            try {
+                                                                const token = localStorage.getItem('hirex_access');
+                                                                const resp = await fetch(`http://127.0.0.1:8000/jobs/applications/${candidate.id}/status/`, {
+                                                                    method: 'PUT',
+                                                                    headers: {
+                                                                        'Content-Type': 'application/json',
+                                                                        ...(token ? { Authorization: `Bearer ${token}` } : {})
+                                                                    },
+                                                                    body: JSON.stringify({ status: statusValue })
+                                                                });
+                                                                const d = await resp.json();
+                                                                if (!resp.ok) throw d;
+                                                                setLocalApps(prev => prev.map(p => p.id === d.id ? d : p));
+                                                                setStatusEditingId(null);
+                                                                alert('Status updated');
+                                                            } catch (err) {
+                                                                console.error(err);
+                                                                alert('Failed to update status: ' + (err?.detail || JSON.stringify(err)));
+                                                            }
+                                                        }} className="px-2 py-1 bg-emerald-600 text-white rounded text-xs">Save</button>
+                                                        <button onClick={() => setStatusEditingId(null)} className="px-2 py-1 border rounded text-xs">Cancel</button>
+                                                    </div>
+                                                ) : (
+                                                    <button onClick={() => { setStatusEditingId(candidate.id); setStatusValue(candidate.status || 'pending'); }} className="flex items-center gap-1.5 border border-gray-300 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-gray-50 transition-colors">Update Status</button>
+                                                )}
+                                            </div>
                                     </div>
                                 </td>
                             </tr>
@@ -217,6 +174,55 @@ const ApplicationsList = ({ onScheduleClick }) => {
                     </tbody>
                 </table>
             </div>
+                {/* Schedule Modal */}
+                {scheduleModalOpen && (
+                    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" onClick={() => setScheduleModalOpen(false)}>
+                        <div className="bg-white rounded-lg p-6 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+                            <h3 className="text-lg font-bold mb-4">Schedule Interview</h3>
+                            <div className="space-y-3">
+                                <div>
+                                    <label className="text-sm font-bold">Interviewer (user id)</label>
+                                    <input value={scheduleForm.interviewer} onChange={(e) => setScheduleForm({...scheduleForm, interviewer: e.target.value})} className="w-full border px-3 py-2 rounded" />
+                                </div>
+                                <div>
+                                    <label className="text-sm font-bold">Date</label>
+                                    <input type="date" value={scheduleForm.date} onChange={(e) => setScheduleForm({...scheduleForm, date: e.target.value})} className="w-full border px-3 py-2 rounded" />
+                                </div>
+                                <div>
+                                    <label className="text-sm font-bold">Start Time</label>
+                                    <input type="datetime-local" value={scheduleForm.start_time} onChange={(e) => setScheduleForm({...scheduleForm, start_time: e.target.value})} className="w-full border px-3 py-2 rounded" />
+                                </div>
+                                <div>
+                                    <label className="text-sm font-bold">Duration (minutes)</label>
+                                    <input type="number" value={scheduleForm.duration} onChange={(e) => setScheduleForm({...scheduleForm, duration: Number(e.target.value)})} className="w-full border px-3 py-2 rounded" />
+                                </div>
+                                <div className="flex justify-end gap-2 mt-4">
+                                    <button className="px-4 py-2 border rounded" onClick={() => setScheduleModalOpen(false)}>Cancel</button>
+                                    <button className="px-4 py-2 bg-emerald-600 text-white rounded" onClick={async () => {
+                                        try {
+                                            const token = localStorage.getItem('hirex_access');
+                                            const resp = await fetch('http://127.0.0.1:8000/jobs/schedule-interview/', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    ...(token ? { Authorization: `Bearer ${token}` } : {})
+                                                },
+                                                body: JSON.stringify(scheduleForm)
+                                            });
+                                            const d = await resp.json();
+                                            if (!resp.ok) throw d;
+                                            alert('Interview scheduled');
+                                            setScheduleModalOpen(false);
+                                        } catch (err) {
+                                            console.error(err);
+                                            alert('Failed to schedule: ' + (err?.detail || JSON.stringify(err)));
+                                        }
+                                    }}>Schedule</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
         </div>
     );
 };
