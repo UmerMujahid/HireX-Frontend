@@ -123,21 +123,16 @@ const HRDashboard = ({ onNavigate, initialView = 'dashboard' }) => {
                                     <p className="text-gray-500 text-sm mt-1">Welcome back, Sarah! Here's what's happening today.</p>
                                 </div>
                                 <div>
-                                        <div className="flex items-center gap-2">
-                                                    <button onClick={async () => { setNotificationsOpen(true); try { const token = localStorage.getItem('hirex_access'); const res = await fetch('http://127.0.0.1:8000/jobs/notifications/', { headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) } }); const data = await res.json(); if (!res.ok) throw data; setNotifications(data || []); const unread = (data || []).filter(n => !n.is_read).length; setUnreadCount(unread); } catch (e) { console.error('Failed to load notifications', e); } }} className="relative text-gray-600 hover:text-gray-900 p-2 rounded-full">
-                                                        <Bell size={18} />
-                                                        {unreadCount > 0 && (
-                                                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5">{unreadCount}</span>
-                                                        )}
-                                                    </button>
-                                            <button
-                                                onClick={() => setCurrentView('post-job')}
-                                                className="bg-[#10b981] text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-[#059669] transition-colors shadow-sm"
-                                            >
-                                                <Plus size={18} />
-                                                Post New Job
-                                            </button>
-                                        </div>
+                                    <div className="flex items-center gap-2">
+
+                                        <button
+                                            onClick={() => setCurrentView('post-job')}
+                                            className="bg-[#10b981] text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-[#059669] transition-colors shadow-sm"
+                                        >
+                                            <Plus size={18} />
+                                            Post New Job
+                                        </button>
+                                    </div>
                                 </div>
                             </header>
 
@@ -323,53 +318,53 @@ const HRDashboard = ({ onNavigate, initialView = 'dashboard' }) => {
                             )}
                         </div>
                         <div className="space-y-3 max-h-72 overflow-auto">
-                                {notifications.length === 0 ? (
-                                    <p className="text-sm text-gray-500">No notifications</p>
-                                ) : (
-                                    notifications.map((n) => (
-                                        <div key={n.id} className="p-3 border rounded flex justify-between items-start">
-                                            <div>
-                                                <p className="text-sm text-gray-800">{n.message}</p>
-                                                <p className="text-xs text-gray-500">{new Date(n.created_at).toLocaleString()}</p>
-                                            </div>
-                                            <div className="ml-4">
-                                                {!n.is_read ? (
-                                                    <button className="text-sm text-emerald-600 font-bold" onClick={async () => {
-                                                        try {
-                                                            const token = localStorage.getItem('hirex_access');
-                                                            const res = await fetch(`http://127.0.0.1:8000/jobs/notifications/${n.id}/read/`, { method: 'PUT', headers: { ...(token ? { Authorization: `Bearer ${token}` } : {} ) } });
-                                                            const data = await res.json();
-                                                            if (!res.ok) throw data;
-                                                            // update local state
-                                                            setNotifications((prev) => prev.map(x => x.id === data.id ? data : x));
-                                                            setUnreadCount((c) => Math.max(0, c - 1));
-                                                        } catch (e) {
-                                                            console.error('Failed to mark as read', e);
-                                                        }
-                                                    }}>Mark read</button>
-                                                ) : (
-                                                    <span className="text-xs text-gray-400">Read</span>
-                                                )}
-                                            </div>
+                            {notifications.length === 0 ? (
+                                <p className="text-sm text-gray-500">No notifications</p>
+                            ) : (
+                                notifications.map((n) => (
+                                    <div key={n.id} className="p-3 border rounded flex justify-between items-start">
+                                        <div>
+                                            <p className="text-sm text-gray-800">{n.message}</p>
+                                            <p className="text-xs text-gray-500">{new Date(n.created_at).toLocaleString()}</p>
                                         </div>
-                                    ))
-                                )}
-                            </div>
-                            <div className="flex justify-end mt-4">
-                                <button className="px-4 py-2 bg-emerald-600 text-white rounded" onClick={async () => {
-                                    try {
-                                        const token = localStorage.getItem('hirex_access');
-                                        const res = await fetch('http://127.0.0.1:8000/jobs/notifications/', { headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) } });
-                                        const data = await res.json();
-                                        if (!res.ok) throw data;
-                                        setNotifications(data || []);
-                                        setUnreadCount((data || []).filter(n => !n.is_read).length);
-                                    } catch (e) {
-                                        console.error('Failed to load notifications', e);
-                                    }
-                                }}>Refresh</button>
-                            </div>
-                    
+                                        <div className="ml-4">
+                                            {!n.is_read ? (
+                                                <button className="text-sm text-emerald-600 font-bold" onClick={async () => {
+                                                    try {
+                                                        const token = localStorage.getItem('hirex_access');
+                                                        const res = await fetch(`http://127.0.0.1:8000/jobs/notifications/${n.id}/read/`, { method: 'PUT', headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) } });
+                                                        const data = await res.json();
+                                                        if (!res.ok) throw data;
+                                                        // update local state
+                                                        setNotifications((prev) => prev.map(x => x.id === data.id ? data : x));
+                                                        setUnreadCount((c) => Math.max(0, c - 1));
+                                                    } catch (e) {
+                                                        console.error('Failed to mark as read', e);
+                                                    }
+                                                }}>Mark read</button>
+                                            ) : (
+                                                <span className="text-xs text-gray-400">Read</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                        <div className="flex justify-end mt-4">
+                            <button className="px-4 py-2 bg-emerald-600 text-white rounded" onClick={async () => {
+                                try {
+                                    const token = localStorage.getItem('hirex_access');
+                                    const res = await fetch('http://127.0.0.1:8000/jobs/notifications/', { headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) } });
+                                    const data = await res.json();
+                                    if (!res.ok) throw data;
+                                    setNotifications(data || []);
+                                    setUnreadCount((data || []).filter(n => !n.is_read).length);
+                                } catch (e) {
+                                    console.error('Failed to load notifications', e);
+                                }
+                            }}>Refresh</button>
+                        </div>
+
                     </div>
                 </div>
             )}

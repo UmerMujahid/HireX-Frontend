@@ -18,6 +18,8 @@ import ApplicationDetails from './pages/ApplicationDetails';
 import CandidateProfile from './pages/CandidateProfile';
 import InterviewerDashboard from './pages/InterviewerDashboard';
 import InterviewFeedback from './pages/InterviewFeedback';
+
+import ScrollToTop from './components/ScrollToTop';
 import { useAuth } from './context/AuthContext';
 
 const RequireRole = ({ role, children }) => {
@@ -40,7 +42,17 @@ const AppLayout = () => {
           login: '/login',
           'get-started': '/get-started',
           'hr-dashboard': '/hr',
-          'hr-job-listings': '/hr/jobs'
+          'hr-job-listings': '/hr/jobs',
+          'admin-dashboard': '/admin',
+          'candidate-dashboard': '/candidate',
+          'interviewer-dashboard': '/interviewer',
+          'signup-hr': '/signup-hr',
+          'signup-candidate': '/signup-candidate',
+          'signup-interviewer': '/signup-interviewer',
+          'forgot-password': '/forgot-password',
+          'interview-feedback': '/interviewer/feedback',
+          'hr-interviews': '/hr/interviews',
+          'hr-reports': '/hr/reports'
         };
         const route = map[p] || '/';
         navigate(route);
@@ -60,7 +72,17 @@ const ComponentWithNav = ({ Component, extraProps }) => {
       login: '/login',
       'get-started': '/get-started',
       'hr-dashboard': '/hr',
-      'hr-job-listings': '/hr/jobs'
+      'hr-job-listings': '/hr/jobs',
+      'admin-dashboard': '/admin',
+      'candidate-dashboard': '/candidate',
+      'interviewer-dashboard': '/interviewer',
+      'signup-hr': '/signup-hr',
+      'signup-candidate': '/signup-candidate',
+      'signup-interviewer': '/signup-interviewer',
+      'forgot-password': '/forgot-password',
+      'interview-feedback': '/interviewer/feedback',
+      'hr-interviews': '/hr/interviews',
+      'hr-reports': '/hr/reports'
     };
     const route = map[page] || '/';
     navigate(route);
@@ -71,6 +93,7 @@ const ComponentWithNav = ({ Component, extraProps }) => {
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route element={<AppLayout />}>
           <Route path="/" element={<ComponentWithNav Component={LandingPage} />} />
@@ -85,6 +108,8 @@ function App() {
 
           <Route path="/hr" element={<RequireRole role="hr"><ComponentWithNav Component={HRDashboard} extraProps={{ initialView: 'dashboard' }} /></RequireRole>} />
           <Route path="/hr/jobs" element={<RequireRole role="hr"><ComponentWithNav Component={HRJobListings} /></RequireRole>} />
+          <Route path="/hr/interviews" element={<RequireRole role="hr"><ComponentWithNav Component={HRDashboard} extraProps={{ initialView: 'interviews' }} /></RequireRole>} />
+          <Route path="/hr/reports" element={<RequireRole role="hr"><ComponentWithNav Component={HRDashboard} extraProps={{ initialView: 'applications' }} /></RequireRole>} />
 
           <Route path="/admin" element={<RequireRole role="admin"><ComponentWithNav Component={AdminDashboard} /></RequireRole>} />
 
