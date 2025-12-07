@@ -100,8 +100,7 @@ const Login = ({ onNavigate }) => {
                             <div className="mt-6 text-center border-t border-gray-100 pt-4">
                                 <button
                                     onClick={() => onNavigate('admin-dashboard')}
-                                    className="text-sm font-bold hover:text-cyan-700 transition-colors"
-                                    style={{ color: '#00bbd3' }}
+                                    className="text-sm font-mono font-bold text-indigo-600 hover:text-indigo-800 hover:drop-shadow-md transition-all duration-300"
                                 >
                                     Access Admin Dashboard (Dev Mode)
                                 </button>

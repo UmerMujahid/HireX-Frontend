@@ -33,7 +33,7 @@ const SignupInterviewer = ({ onNavigate }) => {
                         <button
                             className="w-full font-bold py-4 rounded-xl text-xl hover:opacity-90 transition-opacity text-gray-900 shadow-md transform hover:scale-[1.02] transition-transform"
                             style={{ backgroundColor: '#a3e635' }}
-                            onClick={() => onNavigate('hr-dashboard')}
+                            onClick={() => onNavigate('interviewer-dashboard')}
                         >
                             Continue To Dashboard
                         </button>
