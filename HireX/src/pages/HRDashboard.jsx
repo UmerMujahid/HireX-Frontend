@@ -16,8 +16,8 @@ import {
     Search
 } from 'lucide-react';
 
-const HRDashboard = ({ onNavigate }) => {
-    const [currentView, setCurrentView] = useState('dashboard');
+const HRDashboard = ({ onNavigate, initialView = 'dashboard' }) => {
+    const [currentView, setCurrentView] = useState(initialView);
     return (
         <div className="min-h-screen bg-gray-50 flex font-sans text-gray-900">
 
@@ -39,7 +39,10 @@ const HRDashboard = ({ onNavigate }) => {
                         <Home size={20} />
                         Home
                     </button>
-                    <button className="flex items-center gap-3 w-full px-4 py-3 text-gray-500 hover:bg-gray-50 hover:text-gray-900 rounded-lg font-medium transition-colors">
+                    <button 
+                        className="flex items-center gap-3 w-full px-4 py-3 text-gray-500 hover:bg-gray-50 hover:text-gray-900 rounded-lg font-medium transition-colors"
+                        onClick={() => onNavigate('hr-job-listings')}
+                    >
                         <Briefcase size={20} />
                         Job Listings
                     </button>
