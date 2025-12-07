@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
 import PostJob from '../components/PostJob';
 import ApplicationsList from '../components/ApplicationsList';
@@ -18,6 +18,16 @@ import {
 
 const HRDashboard = ({ onNavigate, initialView = 'dashboard' }) => {
     const [currentView, setCurrentView] = useState(initialView);
+
+    // Sync state with prop if it changes (handling route changes in App.jsx)
+    useEffect(() => {
+        setCurrentView(initialView);
+    }, [initialView]);
+
+    // Scroll to top whenever the internal view changes
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [currentView]);
     return (
         <div className="min-h-screen bg-gray-50 flex font-sans text-gray-900">
 
