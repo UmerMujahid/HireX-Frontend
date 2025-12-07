@@ -2,9 +2,16 @@ import React, { useState } from 'react';
 import Footer from '../components/Footer';
 import AuthSidebar from '../components/AuthSidebar';
 import { Eye, EyeOff } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const Login = ({ onNavigate }) => {
     const [showPassword, setShowPassword] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const auth = useAuth();
 
     return (
         <div className="min-h-screen bg-white font-sans text-gray-900 flex flex-col">
@@ -24,10 +31,27 @@ const Login = ({ onNavigate }) => {
                                 <p className="text-gray-500 text-sm">Sign In to continue to your account</p>
                             </div>
 
-                            <form className="space-y-6">
+                            <form className="space-y-6" onSubmit={async (e) => {
+                                e.preventDefault();
+                                setError(null);
+                                setLoading(true);
+                                try {
+                                    const data = await auth.login({ email, password });
+                                    // navigate based on role
+                                    if (data.role === 'admin') onNavigate('admin-dashboard');
+                                    else if (data.role === 'hr') onNavigate('hr-dashboard');
+                                    else if (data.role === 'interviewer') onNavigate('interviewer-dashboard');
+                                    else onNavigate('candidate-dashboard');
+                                } catch (err) {
+                                    const message = err?.detail || err?.message || JSON.stringify(err);
+                                    setError(message);
+                                } finally { setLoading(false); }
+                            }}>
                                 <div>
                                     <label className="block text-xs font-bold text-gray-900 mb-2">Email Address</label>
                                     <input
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
                                         type="email"
                                         placeholder="name@gmail.com"
                                         className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 text-sm placeholder-gray-400 focus:outline-none"
@@ -38,6 +62,8 @@ const Login = ({ onNavigate }) => {
                                     <label className="block text-xs font-bold text-gray-900 mb-2">Password</label>
                                     <div className="relative">
                                         <input
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
                                             type={showPassword ? "text" : "password"}
                                             placeholder="Enter your password"
                                             className="w-full bg-gray-100 border-none rounded-lg py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none pr-10"
@@ -64,11 +90,13 @@ const Login = ({ onNavigate }) => {
 
                                 <button
                                     type="submit"
-                                    className="w-full text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all"
+                                    disabled={loading}
+                                    className="w-full text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all disabled:opacity-60"
                                     style={{ backgroundColor: '#00bbd3' }}
                                 >
-                                    Log In
+                                    {loading ? 'Signing in...' : 'Log In'}
                                 </button>
+                                {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
                             </form>
 
                             <div className="mt-8">

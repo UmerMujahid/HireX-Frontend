@@ -1,9 +1,27 @@
-import React, { useState } from 'react';
-import { Menu, X, Users } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Menu, X, Users, Bell } from 'lucide-react';
 import Button from './Button';
 
 const Navbar = ({ onNavigate, currentPage }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [unread, setUnread] = useState(0);
+
+    useEffect(() => {
+        let mounted = true;
+        const load = async () => {
+            try {
+                const token = localStorage.getItem('hirex_access');
+                const res = await fetch('http://127.0.0.1:8000/jobs/notifications/', { headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) } });
+                const data = await res.json();
+                if (!res.ok) return;
+                if (mounted) setUnread((data || []).filter(n => !n.is_read).length);
+            } catch (e) {
+                // ignore
+            }
+        };
+        load();
+        return () => { mounted = false };
+    }, []);
 
     return (
         <nav className="bg-white py-1 shadow-md sticky top-0 z-50">
@@ -41,7 +59,13 @@ const Navbar = ({ onNavigate, currentPage }) => {
                         >
                             Login
                         </button>
-                        <Button variant="primary" onClick={() => onNavigate('get-started')}>Get Started</Button>
+                        <div className="flex items-center gap-4">
+                            <button onClick={() => onNavigate && onNavigate('hr-dashboard')} className="relative p-2 rounded-full hover:bg-gray-100">
+                                <Bell size={18} />
+                                {unread > 0 && <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5">{unread}</span>}
+                            </button>
+                            <Button variant="primary" onClick={() => onNavigate('get-started')}>Get Started</Button>
+                        </div>
                     </div>
 
                     {/* Mobile menu button */}

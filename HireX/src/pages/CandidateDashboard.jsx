@@ -1,9 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Lightbulb, Search } from 'lucide-react';
 import Footer from '../components/Footer';
 import CandidateNavbar from '../components/CandidateNavbar';
 
 const CandidateDashboard = ({ onNavigate }) => {
+    const [apps, setApps] = useState([]);
+    const [profile, setProfile] = useState(null);
+
+    useEffect(() => {
+        let mounted = true;
+        const load = async () => {
+            try {
+                const token = localStorage.getItem('hirex_access');
+                const [res1, res2] = await Promise.all([
+                    fetch('http://127.0.0.1:8000/jobs/my-applications/', { headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) } }),
+                    fetch('http://127.0.0.1:8000/auth/candidate/profile/', { headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) } })
+                ]);
+                if (res1.ok) {
+                    const data = await res1.json();
+                    if (mounted) setApps(data || []);
+                }
+                if (res2.ok) {
+                    const p = await res2.json();
+                    if (mounted) setProfile(p);
+                }
+            } catch (e) {
+                console.error('Failed to load candidate data', e);
+            }
+        };
+        load();
+        return () => { mounted = false };
+    }, []);
+
     return (
         <div className="min-h-screen bg-white font-sans text-gray-900 flex flex-col">
             <CandidateNavbar onNavigate={onNavigate} activePage="candidate-dashboard" />
@@ -58,12 +86,7 @@ const CandidateDashboard = ({ onNavigate }) => {
                             </p>
                         </div>
                         <div className="w-full border-t border-gray-300 my-4"></div>
-                        <button
-                            onClick={() => onNavigate('application-details')}
-                            className="bg-[#8cc63f] text-white font-bold py-2 px-8 rounded-lg hover:bg-[#7ab332] transition-colors mt-2 text-sm"
-                        >
-                            View More
-                        </button>
+                        <button onClick={() => window.location.href = '/candidate/application'} className="bg-[#8cc63f] text-white font-bold py-2 px-8 rounded-lg hover:bg-[#7ab332] transition-colors mt-2 text-sm">View More</button>
                     </div>
 
                     {/* Card 2: Interview */}
@@ -80,6 +103,31 @@ const CandidateDashboard = ({ onNavigate }) => {
                             View Details
                         </button>
                     </div>
+                </div>
+
+                <div className="mb-8">
+                    <h2 className="text-lg font-bold text-gray-900 mb-4">My Applications</h2>
+                    {apps.length === 0 ? (
+                        <p className="text-sm text-gray-500">You have not applied to any jobs yet.</p>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {apps.map(a => (
+                                <div key={a.id} className="bg-white border p-4 rounded">
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <p className="font-bold">{a.applied_for?.title || 'Job'}</p>
+                                            <p className="text-xs text-gray-500">{new Date(a.applied_date).toLocaleString()}</p>
+                                        </div>
+                                        <div className="text-sm font-bold text-gray-700">{a.status}</div>
+                                    </div>
+                                    <div className="mt-3 text-sm text-gray-700">
+                                        <p>{a.description}</p>
+                                        {a.resume && <p className="mt-2"><a className="text-emerald-600 font-bold" href={a.resume} target="_blank" rel="noreferrer">View resume</a></p>}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
             </main>

@@ -1,8 +1,61 @@
 import React from 'react';
 import Footer from '../components/Footer';
 import CandidateNavbar from '../components/CandidateNavbar';
+import ApplyJob from '../components/ApplyJob';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+// Read jobId from URL query param (?jobId=) or from localStorage fallback
+const resolveJobIdFromUrlOrStorage = () => {
+    try {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('jobId');
+        if (id) return Number(id);
+    } catch (e) {}
+    const stored = localStorage.getItem('hirex_selected_job');
+    if (stored) try { return Number(stored); } catch (e) {}
+    return null;
+}
 
 const ApplicationDetails = ({ onNavigate }) => {
+    const params = useParams();
+    const paramJobId = params.jobId ? Number(params.jobId) : null;
+    const [jobId, setJobId] = useState(paramJobId || resolveJobIdFromUrlOrStorage());
+
+    // If a jobId is present, try to fetch the job to verify it exists
+    useEffect(() => {
+        let mounted = true;
+        const load = async () => {
+            if (!jobId) {
+                // fallback: try to load first job
+                try {
+                    const res = await fetch('http://127.0.0.1:8000/jobs/');
+                    if (!res.ok) return;
+                    const data = await res.json();
+                    if (mounted && Array.isArray(data) && data.length) setJobId(data[0].id);
+                } catch (e) {
+                    console.error('Failed to load jobs', e);
+                }
+                return;
+            }
+
+            try {
+                const res = await fetch(`http://127.0.0.1:8000/jobs/${jobId}/`);
+                if (!res.ok) {
+                    // invalid id -> clear
+                    setJobId(null);
+                    return;
+                }
+                const data = await res.json();
+                // persist selection for cross-page navigation
+                localStorage.setItem('hirex_selected_job', String(jobId));
+            } catch (e) {
+                console.error('Failed to verify job', e);
+            }
+        };
+        load();
+        return () => { mounted = false };
+    }, [jobId]);
     return (
         <div className="min-h-screen bg-white font-sans text-gray-900 flex flex-col">
             <CandidateNavbar onNavigate={onNavigate} activePage="dashboard" />
@@ -37,6 +90,10 @@ const ApplicationDetails = ({ onNavigate }) => {
                             <li>A portfolio showing previous work</li>
                             <li>Good understanding of user-centered design</li>
                         </ul>
+                    </div>
+                    <div className="mt-8">
+                        <h3 className="font-bold text-gray-900 mb-4 text-base">Apply for this job</h3>
+                        {jobId ? <ApplyJob jobId={jobId} onApplied={(d) => { alert('Applied successfully'); console.log(d); }} /> : <p>Loading application form…</p>}
                     </div>
                 </div>
             </main>

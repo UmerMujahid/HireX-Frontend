@@ -3,6 +3,7 @@ import Footer from '../components/Footer';
 import PostJob from '../components/PostJob';
 import ApplicationsList from '../components/ApplicationsList';
 import Interviews from '../components/Interviews';
+import useFetch from '../hooks/useFetch';
 import {
     Users,
     Home,
@@ -18,6 +19,26 @@ import {
 
 const HRDashboard = ({ onNavigate, initialView = 'dashboard' }) => {
     const [currentView, setCurrentView] = useState(initialView);
+    const [notificationsOpen, setNotificationsOpen] = useState(false);
+    const [notifications, setNotifications] = useState([]);
+    const [unreadCount, setUnreadCount] = useState(0);
+
+    useEffect(() => {
+        let mounted = true;
+        const loadCount = async () => {
+            try {
+                const token = localStorage.getItem('hirex_access');
+                const res = await fetch('http://127.0.0.1:8000/jobs/notifications/', { headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) } });
+                const data = await res.json();
+                if (!res.ok) return;
+                if (mounted) setUnreadCount((data || []).filter(n => !n.is_read).length);
+            } catch (e) {
+                // ignore
+            }
+        };
+        loadCount();
+        return () => { mounted = false };
+    }, []);
 
     // Sync state with prop if it changes (handling route changes in App.jsx)
     useEffect(() => {
@@ -28,6 +49,10 @@ const HRDashboard = ({ onNavigate, initialView = 'dashboard' }) => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [currentView]);
+
+    // Fetch jobs and applications for the HR dashboard
+    const { data: jobsData, loading: jobsLoading } = useFetch('http://127.0.0.1:8000/jobs/');
+    const { data: appsData, loading: appsLoading } = useFetch('http://127.0.0.1:8000/jobs/applications/');
     return (
         <div className="min-h-screen bg-gray-50 flex font-sans text-gray-900">
 
@@ -98,13 +123,21 @@ const HRDashboard = ({ onNavigate, initialView = 'dashboard' }) => {
                                     <p className="text-gray-500 text-sm mt-1">Welcome back, Sarah! Here's what's happening today.</p>
                                 </div>
                                 <div>
-                                    <button
-                                        onClick={() => setCurrentView('post-job')}
-                                        className="bg-[#10b981] text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-[#059669] transition-colors shadow-sm"
-                                    >
-                                        <Plus size={18} />
-                                        Post New Job
-                                    </button>
+                                        <div className="flex items-center gap-2">
+                                                    <button onClick={async () => { setNotificationsOpen(true); try { const token = localStorage.getItem('hirex_access'); const res = await fetch('http://127.0.0.1:8000/jobs/notifications/', { headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) } }); const data = await res.json(); if (!res.ok) throw data; setNotifications(data || []); const unread = (data || []).filter(n => !n.is_read).length; setUnreadCount(unread); } catch (e) { console.error('Failed to load notifications', e); } }} className="relative text-gray-600 hover:text-gray-900 p-2 rounded-full">
+                                                        <Bell size={18} />
+                                                        {unreadCount > 0 && (
+                                                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5">{unreadCount}</span>
+                                                        )}
+                                                    </button>
+                                            <button
+                                                onClick={() => setCurrentView('post-job')}
+                                                className="bg-[#10b981] text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-[#059669] transition-colors shadow-sm"
+                                            >
+                                                <Plus size={18} />
+                                                Post New Job
+                                            </button>
+                                        </div>
                                 </div>
                             </header>
 
@@ -114,7 +147,7 @@ const HRDashboard = ({ onNavigate, initialView = 'dashboard' }) => {
                                 <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-start justify-between">
                                     <div>
                                         <p className="text-gray-500 text-sm mb-1">Open Jobs</p>
-                                        <h3 className="text-3xl font-bold text-gray-900">5</h3>
+                                        <h3 className="text-3xl font-bold text-gray-900">{jobsData ? jobsData.length : jobsLoading ? '…' : 0}</h3>
                                     </div>
                                     <div className="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center text-emerald-600">
                                         <Briefcase size={20} />
@@ -124,7 +157,7 @@ const HRDashboard = ({ onNavigate, initialView = 'dashboard' }) => {
                                 <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-start justify-between">
                                     <div>
                                         <p className="text-gray-500 text-sm mb-1">Total Applications</p>
-                                        <h3 className="text-3xl font-bold text-gray-900">147</h3>
+                                        <h3 className="text-3xl font-bold text-gray-900">{appsData ? appsData.length : appsLoading ? '…' : 0}</h3>
                                     </div>
                                     <div className="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center text-emerald-600">
                                         <Users size={20} />
@@ -134,7 +167,7 @@ const HRDashboard = ({ onNavigate, initialView = 'dashboard' }) => {
                                 <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-start justify-between">
                                     <div>
                                         <p className="text-gray-500 text-sm mb-1">Interviews This week</p>
-                                        <h3 className="text-3xl font-bold text-gray-900">12</h3>
+                                        <h3 className="text-3xl font-bold text-gray-900">{appsData ? appsData.filter(a => a.status === 'interview').length : '—'}</h3>
                                     </div>
                                     <div className="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center text-emerald-600">
                                         <Calendar size={20} />
@@ -144,7 +177,7 @@ const HRDashboard = ({ onNavigate, initialView = 'dashboard' }) => {
                                 <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-start justify-between">
                                     <div>
                                         <p className="text-gray-500 text-sm mb-1">Pending Feedback</p>
-                                        <h3 className="text-3xl font-bold text-gray-900">3</h3>
+                                        <h3 className="text-3xl font-bold text-gray-900">{appsData ? appsData.filter(a => a.status === 'interview' && !a.feedback).length : '—'}</h3>
                                     </div>
                                     <div className="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center text-emerald-600">
                                         <MessageSquare size={20} />
@@ -172,32 +205,28 @@ const HRDashboard = ({ onNavigate, initialView = 'dashboard' }) => {
                                                     <tr className="text-left border-b border-gray-100">
                                                         <th className="pb-4 font-bold text-sm text-gray-900">Job Title</th>
                                                         <th className="pb-4 font-bold text-sm text-gray-900 text-center">Applications</th>
+                                                        <th className="pb-4 font-bold text-sm text-gray-900 text-center">Deadline</th>
                                                         <th className="pb-4 font-bold text-sm text-gray-900">Avg. Match Score</th>
                                                         <th className="pb-4 font-bold text-sm text-gray-900 text-right">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody className="divide-y divide-gray-50">
-                                                    {[
-                                                        { title: "Senior Frontend Developer", apps: 42, score: 78, color: "bg-emerald-500" },
-                                                        { title: "Product Manager", apps: 28, score: 82, color: "bg-emerald-500" },
-                                                        { title: "UX Designer", apps: 35, score: 71, color: "bg-emerald-500" },
-                                                        { title: "Backend Engineer", apps: 19, score: 85, color: "bg-emerald-500" },
-                                                        { title: "Data Analyst", apps: 23, score: 76, color: "bg-emerald-500" }
-                                                    ].map((job, index) => (
-                                                        <tr key={index}>
+                                                    {(jobsData || []).map((job) => (
+                                                        <tr key={job.id}>
                                                             <td className="py-4 text-sm font-medium text-gray-600">
                                                                 <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block mr-2"></span>
                                                                 {job.title}
                                                             </td>
                                                             <td className="py-4 text-center">
-                                                                <span className="bg-gray-100 text-gray-700 text-xs font-bold px-2 py-1 rounded">{job.apps}</span>
+                                                                <span className="bg-gray-100 text-gray-700 text-xs font-bold px-2 py-1 rounded">{job.applications ? job.applications.length : 0}</span>
                                                             </td>
+                                                            <td className="py-4 text-center text-sm text-gray-600">{job.deadline ? new Date(job.deadline).toLocaleDateString() : '—'}</td>
                                                             <td className="py-4">
                                                                 <div className="flex items-center gap-2">
                                                                     <div className="w-24 h-2 bg-gray-100 rounded-full overflow-hidden">
-                                                                        <div className={`h-full ${job.color}`} style={{ width: `${job.score}%` }}></div>
+                                                                        <div className={`h-full bg-emerald-500`} style={{ width: `${Math.min(100, 70)}%` }}></div>
                                                                     </div>
-                                                                    <span className="text-xs text-gray-500">{job.score}%</span>
+                                                                    <span className="text-xs text-gray-500">—%</span>
                                                                 </div>
                                                             </td>
                                                             <td className="py-4 text-right">
@@ -267,15 +296,83 @@ const HRDashboard = ({ onNavigate, initialView = 'dashboard' }) => {
                             </div>
                         </>
                     ) : currentView === 'post-job' ? (
-                        <PostJob onCancel={() => setCurrentView('dashboard')} />
+                        <PostJob onCancel={() => setCurrentView('dashboard')} onPosted={() => { setCurrentView('dashboard'); window.location.reload(); }} />
                     ) : currentView === 'applications' ? (
-                        <ApplicationsList onScheduleClick={() => setCurrentView('interviews')} />
+                        <ApplicationsList applications={appsData || []} onScheduleClick={() => setCurrentView('interviews')} />
                     ) : (
                         <Interviews />
                     )}
                 </main>
                 <Footer />
             </div>
+
+            {notificationsOpen && (
+                <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center" onClick={() => setNotificationsOpen(false)}>
+                    <div className="bg-white rounded-lg p-6 w-full max-w-lg" onClick={(e) => e.stopPropagation()}>
+                        <h3 className="text-lg font-bold mb-4">Notifications</h3>
+                        <div className="space-y-3 max-h-72 overflow-auto">
+                            {notifications.length === 0 ? (
+                                <p className="text-sm text-gray-500">No notifications</p>
+                            ) : (
+                                notifications.map((n) => (
+                                    <div key={n.id} className="p-3 border rounded">
+                                        <p className="text-sm text-gray-800">{n.message}</p>
+                                        <p className="text-xs text-gray-500">{new Date(n.created_at).toLocaleString()}</p>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                        <div className="space-y-3 max-h-72 overflow-auto">
+                                {notifications.length === 0 ? (
+                                    <p className="text-sm text-gray-500">No notifications</p>
+                                ) : (
+                                    notifications.map((n) => (
+                                        <div key={n.id} className="p-3 border rounded flex justify-between items-start">
+                                            <div>
+                                                <p className="text-sm text-gray-800">{n.message}</p>
+                                                <p className="text-xs text-gray-500">{new Date(n.created_at).toLocaleString()}</p>
+                                            </div>
+                                            <div className="ml-4">
+                                                {!n.is_read ? (
+                                                    <button className="text-sm text-emerald-600 font-bold" onClick={async () => {
+                                                        try {
+                                                            const token = localStorage.getItem('hirex_access');
+                                                            const res = await fetch(`http://127.0.0.1:8000/jobs/notifications/${n.id}/read/`, { method: 'PUT', headers: { ...(token ? { Authorization: `Bearer ${token}` } : {} ) } });
+                                                            const data = await res.json();
+                                                            if (!res.ok) throw data;
+                                                            // update local state
+                                                            setNotifications((prev) => prev.map(x => x.id === data.id ? data : x));
+                                                            setUnreadCount((c) => Math.max(0, c - 1));
+                                                        } catch (e) {
+                                                            console.error('Failed to mark as read', e);
+                                                        }
+                                                    }}>Mark read</button>
+                                                ) : (
+                                                    <span className="text-xs text-gray-400">Read</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                            <div className="flex justify-end mt-4">
+                                <button className="px-4 py-2 bg-emerald-600 text-white rounded" onClick={async () => {
+                                    try {
+                                        const token = localStorage.getItem('hirex_access');
+                                        const res = await fetch('http://127.0.0.1:8000/jobs/notifications/', { headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) } });
+                                        const data = await res.json();
+                                        if (!res.ok) throw data;
+                                        setNotifications(data || []);
+                                        setUnreadCount((data || []).filter(n => !n.is_read).length);
+                                    } catch (e) {
+                                        console.error('Failed to load notifications', e);
+                                    }
+                                }}>Refresh</button>
+                            </div>
+                    
+                    </div>
+                </div>
+            )}
 
         </div>
     );

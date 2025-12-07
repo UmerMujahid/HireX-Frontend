@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Users } from 'lucide-react';
 import Footer from '../components/Footer';
 import Button from '../components/Button';
@@ -46,21 +46,28 @@ const HRJobListings = ({ onNavigate }) => {
         </nav>
     );
 
-    // Job Data
-    const jobs = [
-        {
-            title: "Software Engineer",
-            description: "Join our team to help build better, smarter, and more reliable software that impacts real users."
-        },
-        {
-            title: "Data Analyst",
-            description: "Join our team to help uncover deeper insights through data and drive intelligent decision-making."
-        },
-        {
-            title: "Electrical Engineer",
-            description: "Join our team to help engineer efficient, powerful, and dependable electrical systems for the future."
-        }
-    ];
+    // Job Data (fetched from backend)
+    const [jobs, setJobs] = useState([]);
+    const [loadingJobs, setLoadingJobs] = useState(false);
+
+    useEffect(() => {
+        let mounted = true;
+        const load = async () => {
+            setLoadingJobs(true);
+            try {
+                const res = await fetch('http://127.0.0.1:8000/jobs/');
+                if (!res.ok) throw new Error('Failed to load jobs');
+                const data = await res.json();
+                if (mounted) setJobs(data || []);
+            } catch (e) {
+                console.error('Failed to load jobs', e);
+            } finally {
+                setLoadingJobs(false);
+            }
+        };
+        load();
+        return () => { mounted = false };
+    }, []);
 
     // Filter Items
     const filters = [
@@ -125,9 +132,12 @@ const HRJobListings = ({ onNavigate }) => {
                             {jobs.map((job, index) => (
                                 <Card key={index} className="flex flex-col h-full !p-8 !rounded-lg !shadow-sm !border-none !bg-white">
                                     <h3 className="text-lg font-bold text-gray-900 mb-4">{job.title}</h3>
-                                    <p className="text-gray-900 text-sm leading-relaxed flex-grow mb-8">
+                                    <p className="text-gray-900 text-sm leading-relaxed flex-grow mb-4">
                                         {job.description}
                                     </p>
+                                    {job.deadline && (
+                                        <p className="text-sm text-gray-500 mb-6">Deadline: <span className="font-medium text-gray-700">{new Date(job.deadline).toLocaleDateString()}</span></p>
+                                    )}
                                     <Button
                                         variant="primary"
                                         className="w-full !bg-[#9cc960] hover:!bg-[#8bbd50] !text-white !font-medium !rounded-md !h-10 text-sm"
