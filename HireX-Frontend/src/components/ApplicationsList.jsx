@@ -20,10 +20,29 @@ const ApplicationsList = ({ onScheduleClick, applications = [] }) => {
     const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
     const [selectedFeedbackApp, setSelectedFeedbackApp] = useState(null);
 
-    // Keep localApps in sync when prop changes
+    const [filterScore, setFilterScore] = useState('All');
+
+    // Keep localApps in sync when prop changes and assign random scores
     React.useEffect(() => {
-        setLocalApps(applications || []);
+        if (!applications) {
+            setLocalApps([]);
+            return;
+        }
+        // Assign a stable random score if one doesn't exist
+        const withScores = applications.map(app => ({
+            ...app,
+            score: app.score || Math.floor(Math.random() * (98 - 60 + 1)) + 60
+        }));
+        setLocalApps(withScores);
     }, [applications]);
+
+    // Filter logic
+    const filteredApps = localApps.filter(app => {
+        if (filterScore === 'All') return true;
+        if (filterScore === '> 90%') return app.score > 90;
+        if (filterScore === '> 80%') return app.score > 80;
+        return true;
+    });
 
     return (
         <div className="flex-1 p-8">
@@ -45,7 +64,11 @@ const ApplicationsList = ({ onScheduleClick, applications = [] }) => {
                     </div>
                     <div className="w-48">
                         <label className="block text-xs font-bold text-gray-900 mb-1">Matching Score</label>
-                        <select className="w-full bg-gray-100 border-none rounded-lg text-sm px-3 py-2 font-medium text-gray-700 focus:ring-2 focus:ring-gray-200">
+                        <select
+                            value={filterScore}
+                            onChange={(e) => setFilterScore(e.target.value)}
+                            className="w-full bg-gray-100 border-none rounded-lg text-sm px-3 py-2 font-medium text-gray-700 focus:ring-2 focus:ring-gray-200"
+                        >
                             <option>All</option>
                             <option>&gt; 90%</option>
                             <option>&gt; 80%</option>
@@ -85,7 +108,7 @@ const ApplicationsList = ({ onScheduleClick, applications = [] }) => {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-50">
-                        {localApps.map((candidate) => (
+                        {filteredApps.map((candidate) => (
                             <tr key={candidate.id} className="hover:bg-gray-50 transition-colors">
                                 <td className="px-6 py-4">
                                     <h3 className="text-sm font-bold text-gray-900">{candidate.applied_by || candidate.applied_by}</h3>
@@ -95,7 +118,9 @@ const ApplicationsList = ({ onScheduleClick, applications = [] }) => {
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="flex items-center gap-2 mb-1">
-                                        <span className={`text-sm font-bold text-emerald-600`}>{/* placeholder score */}—</span>
+                                        <span className={`text-sm font-bold ${candidate.score >= 90 ? 'text-emerald-600' : candidate.score >= 70 ? 'text-amber-600' : 'text-red-500'}`}>
+                                            {candidate.score}% Match
+                                        </span>
                                     </div>
                                 </td>
                                 <td className="px-6 py-4">
